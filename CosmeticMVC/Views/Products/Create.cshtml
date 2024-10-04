@@ -1,0 +1,96 @@
+﻿@model CosmeticMVC.Data.Product
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Product</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="IdProduct" class="control-label"></label>
+                <input asp-for="IdProduct" class="form-control" />
+                <span asp-validation-for="IdProduct" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Price" class="control-label"></label>
+                <input asp-for="Price" class="form-control" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Quantity" class="control-label"></label>
+                <input asp-for="Quantity" class="form-control" />
+                <span asp-validation-for="Quantity" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TotalSold" class="control-label"></label>
+                <input asp-for="TotalSold" class="form-control" />
+                <span asp-validation-for="TotalSold" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Hide" /> @Html.DisplayNameFor(model => model.Hide)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="Meta" class="control-label"></label>
+                <input asp-for="Meta" class="form-control" />
+                <span asp-validation-for="Meta" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Order" class="control-label"></label>
+                <input asp-for="Order" class="form-control" />
+                <span asp-validation-for="Order" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Datebegin" class="control-label"></label>
+                <input asp-for="Datebegin" class="form-control" />
+                <span asp-validation-for="Datebegin" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Exp" class="control-label"></label>
+                <input asp-for="Exp" class="form-control" />
+                <span asp-validation-for="Exp" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IdBrand" class="control-label"></label>
+                <select asp-for="IdBrand" class ="form-control" asp-items="ViewBag.IdBrand"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="IdCatrgory" class="control-label"></label>
+                <select asp-for="IdCatrgory" class ="form-control" asp-items="ViewBag.IdCatrgory"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="IdIngredient" class="control-label"></label>
+                <select asp-for="IdIngredient" class ="form-control" asp-items="ViewBag.IdIngredient"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="IdImage" class="control-label"></label>
+                <select asp-for="IdImage" class ="form-control" asp-items="ViewBag.IdImage"></select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

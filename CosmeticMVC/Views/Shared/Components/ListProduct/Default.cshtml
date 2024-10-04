@@ -1,0 +1,49 @@
+﻿@model IEnumerable<CosmeticMVC.ViewModels.ListProductVM>
+
+@{
+    ViewData["Title"] = "Default";
+    var productCount = Model.Count();
+}
+
+<div class="filter__item">
+    <div class="row">
+        <div class="col-lg-6 col-md-6">
+            <div class="filter__sort">
+                <span>Sort By</span>
+                <form method="get">
+                    <select name="sortOrder">
+                        <option value="0" selected>Default</option>
+                        <option value="1">Giá giảm dần</option>
+                        <option value="2">Giá tăng dần</option>
+                    </select>
+                </form>
+            </div>
+        </div>
+        <div class="col-lg-6 col-md-6">
+            <div class="filter__found">
+                <h6><span>@productCount</span> sản phẩm được tìm thấy</h6>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    @foreach (var i in Model)
+    {
+        <div class="col-lg-4 col-md-6 col-sm-6">
+            <div class="product__item">
+                <div class="product__item__pic set-bg" data-setbg="img/product/product-1.jpg">
+                    <ul class="product__item__pic__hover">
+                        <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                        <li><a href="#"><i class="fa fa-retweet"></i></a></li>
+                        <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                    </ul>
+                </div>
+                <div class="product__item__text">
+                    <h6><a href="#">@i.Name</a></h6>
+                    <h5>@i.Price</h5>
+                </div>
+            </div>
+        </div>
+    }
+</div>

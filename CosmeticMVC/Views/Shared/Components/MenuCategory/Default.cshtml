@@ -1,0 +1,13 @@
+﻿@model IEnumerable<CosmeticMVC.ViewModels.MenuCategoryVM>
+
+<ul>
+    @foreach (var item in Model)
+    {
+        <li>
+            <a asp-controller="Category" asp-action="Index" asp-route-loai="@item.Id">
+                @item.Name
+            </a>
+        </li>
+
+    }
+</ul>
