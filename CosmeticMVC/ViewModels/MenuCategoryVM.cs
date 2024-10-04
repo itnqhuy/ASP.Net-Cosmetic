@@ -7,5 +7,7 @@
         public string Meta { get; set; }
         public string Link { get; set; }
         public bool Hide { get; set; }
+
+        public string Id_category { get; set; }
     }
 }

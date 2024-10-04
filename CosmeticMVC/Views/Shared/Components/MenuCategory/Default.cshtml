@@ -1,13 +1,19 @@
 ﻿@model IEnumerable<CosmeticMVC.ViewModels.MenuCategoryVM>
+@{
+    var controllerName = ViewBag.ControllerName;
+    var currentCategory = ViewContext.RouteData.Values["category"]?.ToString(); // Lấy giá trị 'category' từ URL
+}
 
 <ul>
     @foreach (var item in Model)
     {
         <li>
-            <a asp-controller="Category" asp-action="Index" asp-route-loai="@item.Id">
+            <a asp-controller="@controllerName" 
+               asp-action="Index" 
+               asp-route-category="@item.Id" 
+               class="@(currentCategory == item.Id.ToString() ? "menu-active" : "")"> <!-- So sánh category với Id của item -->
                 @item.Name
             </a>
         </li>
-
     }
 </ul>

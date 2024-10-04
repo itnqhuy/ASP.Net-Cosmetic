@@ -15,7 +15,7 @@ public partial class Post
 
     public string Thumbail { get; set; } = null!;
 
-    public int Meta { get; set; }
+    public string Meta { get; set; } = null!;
 
     public DateOnly ModifiedAt { get; set; }
 

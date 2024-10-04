@@ -12,20 +12,22 @@ namespace CosmeticMVC.ViewComponents
 
         public IViewComponentResult Invoke(bool isDiscount = false)
         {
-            var data = (from pr in db.Products
-                join cat in db.Categories on pr.IdCatrgory equals cat.IdCategory
-                select new ListProductVM()
+            var products = db.Products.AsQueryable();
+            var categoryCount = db.Categories.Count();
+            var data = (from pr in products
+                join img in db.Images on pr.IdImage equals img.IdImage
+                select new ListProductVM
                 {
-                    Id = pr.IdProduct.ToString(),
-                    Name = pr.Name.ToString(),
-                    Description = pr.Description,
-                    Price = (int)pr.Price,
-                    Category = cat.Name,
-                    DiscountedPrice = isDiscount ? (int)pr.Price - 20 : (int?)null, // Giảm giá nếu isDiscount là true
-                    Count = db.Products.Count(p => p.IdProduct == pr.IdProduct) // Đếm số lượng sản phẩm có cùng IdProduct
-                }).ToList();
+                Id = pr.IdProduct.ToString(),
+                Name = pr.Name.ToString(),
+                Description = pr.Description,
+                Price = (int)pr.Price,
+                IdCategory = pr.IdCategory,
+                DiscountedPrice = isDiscount ? (int)pr.Price - 20 : (int?)null,
+                Count = categoryCount
+                });
 
-            return View(isDiscount ? "Discount" : "Default", data); // Gọi view dựa trên isDiscount
+            return View(isDiscount ? "Discount" : "Default", data);
         }
 
     }

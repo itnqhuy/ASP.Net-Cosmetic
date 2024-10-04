@@ -45,9 +45,9 @@ public partial class CosmeticContext : DbContext
 
     public virtual DbSet<Staff> Staff { get; set; }
 
-//    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-//        => optionsBuilder.UseSqlServer("Data Source=NGUYENQUOCHUY;Initial Catalog=cosmetic;Integrated Security=True;Encrypt=True;Trust Server Certificate=True");
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
+        => optionsBuilder.UseSqlServer("Data Source=NGUYENQUOCHUY;Initial Catalog=cosmetic;Integrated Security=True;Encrypt=True;Trust Server Certificate=True\n");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -418,7 +418,10 @@ public partial class CosmeticContext : DbContext
                 .HasMaxLength(11)
                 .IsUnicode(false)
                 .HasColumnName("id_product");
-            entity.Property(e => e.Meta).HasColumnName("meta");
+            entity.Property(e => e.Meta)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("meta");
             entity.Property(e => e.ModifiedAt).HasColumnName("modified_at");
             entity.Property(e => e.Order).HasColumnName("order");
             entity.Property(e => e.Thumbail)
@@ -456,10 +459,10 @@ public partial class CosmeticContext : DbContext
                 .HasMaxLength(11)
                 .IsUnicode(false)
                 .HasColumnName("id_brand");
-            entity.Property(e => e.IdCatrgory)
+            entity.Property(e => e.IdCategory)
                 .HasMaxLength(11)
                 .IsUnicode(false)
-                .HasColumnName("id_catrgory");
+                .HasColumnName("id_category");
             entity.Property(e => e.IdImage)
                 .HasMaxLength(11)
                 .IsUnicode(false)
@@ -485,8 +488,8 @@ public partial class CosmeticContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__product__id_bran__3F466844");
 
-            entity.HasOne(d => d.IdCatrgoryNavigation).WithMany(p => p.Products)
-                .HasForeignKey(d => d.IdCatrgory)
+            entity.HasOne(d => d.IdCategoryNavigation).WithMany(p => p.Products)
+                .HasForeignKey(d => d.IdCategory)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__product__id_catr__403A8C7D");
 

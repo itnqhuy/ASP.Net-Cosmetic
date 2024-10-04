@@ -1,4 +1,4 @@
-/******************************************************************
+﻿/******************************************************************
   Template Name: Ogani
   Description:  Ogani eCommerce  HTML Template
   Author: Colorlib
@@ -413,6 +413,7 @@ ol {
 
 .header__logo {
 	padding: 15px 0;
+
 }
 
 	.header__logo a {
@@ -2361,7 +2362,7 @@ ol {
 -----------------------*/
 
 .blog__sidebar {
-	padding-top: 50px;
+	padding-top: 0px !important;
 }
 
 .blog__sidebar__item {
@@ -3592,4 +3593,10 @@ ol {
 	.blog__details__hero__text h2 {
 		font-size: 24px;
 	}
+}
+
+.menu-active {
+	color: red; /* Màu chữ cho menu đang được chọn */
+	font-weight: bold; /* Chữ in đậm */
+	text-decoration: underline; /* Gạch chân chữ nếu cần */
 }
