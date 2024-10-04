@@ -1,13 +1,13 @@
 ﻿
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Sản phẩm";
     Layout = "_LayoutCustomer";
 }
 
 <!-- Humberger Begin -->
 <div class="humberger__menu__overlay"></div>
 <div class="humberger__menu__wrapper">
-    <div class="humberger__menu__logo">
+    <div class="humberger__menu__logo text-center">
         <a href="#"><img src="img/logo.png" alt=""></a>
     </div>
     <div class="humberger__menu__cart">
@@ -23,7 +23,7 @@
         </div>
     </div>
     <div class="col-lg-6">
-        <nav class="header__menu">
+        <nav class="header__menu text-center">
             <ul>
                 <li><a asp-controller="Home" asp-action="Index">Trang chủ</a></li>
                 <li><a asp-controller="Category" asp-action="Index">Cửa hàng</a></li>
@@ -36,7 +36,9 @@
                         <li><a href="./blog-details.html">Blog</a></li>
                     </ul>
                 </li>
-                <li><a href="./blog.html">Blog</a></li>
+                <li class="active">
+                    <a asp-controller="Post" asp-action="Index">Diễn đàn</a>
+                </li>                
                 <li><a href="./contact.html">Contact</a></li>
             </ul>
         </nav>
@@ -110,8 +112,10 @@
                                 <li><a href="./blog-details.html">Diễn đàn</a></li>
                             </ul>
                         </li>
-                        <li><a href="./blog.html">Diễn đàn</a></li>
-                        <li><a href="./contact.html">Liên hệ</a></li>
+                        <li class="active">
+                            <a asp-controller="Post" asp-action="Index">Diễn đàn</a>
+                        </li>
+                        <li><a asp-controller="Contact" asp-action="Index">Liên hệ</a></li>
                     </ul>
                 </nav>
             </div>
