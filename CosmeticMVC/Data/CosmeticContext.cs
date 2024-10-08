@@ -418,7 +418,10 @@ public partial class CosmeticContext : DbContext
                 .HasMaxLength(11)
                 .IsUnicode(false)
                 .HasColumnName("id_product");
-            entity.Property(e => e.Meta).HasColumnName("meta");
+            entity.Property(e => e.Meta)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("meta");
             entity.Property(e => e.ModifiedAt).HasColumnName("modified_at");
             entity.Property(e => e.Order).HasColumnName("order");
             entity.Property(e => e.Thumbail)
