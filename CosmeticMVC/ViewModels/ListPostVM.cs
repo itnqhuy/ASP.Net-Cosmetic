@@ -18,5 +18,6 @@ namespace CosmeticMVC.ViewModels
         public int Order {get; set; }
 
         public string Name_product {get; set; }
+        public string Image { get; set; }
     }
 }

@@ -21,7 +21,7 @@ namespace CosmeticMVC.Controllers
         // GET: Products
         public async Task<IActionResult> Index()
         {
-            var cosmeticContext = _context.Products.Include(p => p.IdBrandNavigation).Include(p => p.IdCatrgoryNavigation).Include(p => p.IdImageNavigation).Include(p => p.IdIngredientNavigation);
+            var cosmeticContext = _context.Products.Include(p => p.IdBrandNavigation).Include(p => p.IdCategoryNavigation).Include(p => p.IdImageNavigation).Include(p => p.IdIngredientNavigation);
             return View(await cosmeticContext.ToListAsync());
         }
 
@@ -35,7 +35,7 @@ namespace CosmeticMVC.Controllers
 
             var product = await _context.Products
                 .Include(p => p.IdBrandNavigation)
-                .Include(p => p.IdCatrgoryNavigation)
+                .Include(p => p.IdCategoryNavigation)
                 .Include(p => p.IdImageNavigation)
                 .Include(p => p.IdIngredientNavigation)
                 .FirstOrDefaultAsync(m => m.IdProduct == id);
@@ -51,7 +51,7 @@ namespace CosmeticMVC.Controllers
         public IActionResult Create()
         {
             ViewData["IdBrand"] = new SelectList(_context.Brands, "Id", "Id");
-            ViewData["IdCatrgory"] = new SelectList(_context.Categories, "IdCategory", "IdCategory");
+            ViewData["IdCategory"] = new SelectList(_context.Categories, "IdCategory", "IdCategory");
             ViewData["IdImage"] = new SelectList(_context.Images, "IdImage", "IdImage");
             ViewData["IdIngredient"] = new SelectList(_context.Ingredients, "IdIngredient", "IdIngredient");
             return View();
@@ -62,7 +62,7 @@ namespace CosmeticMVC.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("IdProduct,Description,Name,Price,Quantity,TotalSold,Hide,Meta,Order,Datebegin,Exp,IdBrand,IdCatrgory,IdIngredient,IdImage")] Product product)
+        public async Task<IActionResult> Create([Bind("IdProduct,Description,Name,Price,Quantity,TotalSold,Hide,Meta,Order,Datebegin,Exp,IdBrand,IdCategory,IdIngredient,IdImage")] Product product)
         {
             if (ModelState.IsValid)
             {
@@ -71,7 +71,7 @@ namespace CosmeticMVC.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["IdBrand"] = new SelectList(_context.Brands, "Id", "Id", product.IdBrand);
-            ViewData["IdCatrgory"] = new SelectList(_context.Categories, "IdCategory", "IdCategory", product.IdCatrgory);
+            ViewData["IdCategory"] = new SelectList(_context.Categories, "IdCategory", "IdCategory", product.IdCategory);
             ViewData["IdImage"] = new SelectList(_context.Images, "IdImage", "IdImage", product.IdImage);
             ViewData["IdIngredient"] = new SelectList(_context.Ingredients, "IdIngredient", "IdIngredient", product.IdIngredient);
             return View(product);
@@ -91,7 +91,7 @@ namespace CosmeticMVC.Controllers
                 return NotFound();
             }
             ViewData["IdBrand"] = new SelectList(_context.Brands, "Id", "Id", product.IdBrand);
-            ViewData["IdCatrgory"] = new SelectList(_context.Categories, "IdCategory", "IdCategory", product.IdCatrgory);
+            ViewData["IdCategory"] = new SelectList(_context.Categories, "IdCategory", "IdCategory", product.IdCategory);
             ViewData["IdImage"] = new SelectList(_context.Images, "IdImage", "IdImage", product.IdImage);
             ViewData["IdIngredient"] = new SelectList(_context.Ingredients, "IdIngredient", "IdIngredient", product.IdIngredient);
             return View(product);
@@ -102,7 +102,7 @@ namespace CosmeticMVC.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("IdProduct,Description,Name,Price,Quantity,TotalSold,Hide,Meta,Order,Datebegin,Exp,IdBrand,IdCatrgory,IdIngredient,IdImage")] Product product)
+        public async Task<IActionResult> Edit(string id, [Bind("IdProduct,Description,Name,Price,Quantity,TotalSold,Hide,Meta,Order,Datebegin,Exp,IdBrand,IdCategory,IdIngredient,IdImage")] Product product)
         {
             if (id != product.IdProduct)
             {
@@ -130,7 +130,7 @@ namespace CosmeticMVC.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["IdBrand"] = new SelectList(_context.Brands, "Id", "Id", product.IdBrand);
-            ViewData["IdCatrgory"] = new SelectList(_context.Categories, "IdCategory", "IdCategory", product.IdCatrgory);
+            ViewData["IdCategory"] = new SelectList(_context.Categories, "IdCategory", "IdCategory", product.IdCategory);
             ViewData["IdImage"] = new SelectList(_context.Images, "IdImage", "IdImage", product.IdImage);
             ViewData["IdIngredient"] = new SelectList(_context.Ingredients, "IdIngredient", "IdIngredient", product.IdIngredient);
             return View(product);
@@ -146,7 +146,7 @@ namespace CosmeticMVC.Controllers
 
             var product = await _context.Products
                 .Include(p => p.IdBrandNavigation)
-                .Include(p => p.IdCatrgoryNavigation)
+                .Include(p => p.IdCategoryNavigation)
                 .Include(p => p.IdImageNavigation)
                 .Include(p => p.IdIngredientNavigation)
                 .FirstOrDefaultAsync(m => m.IdProduct == id);

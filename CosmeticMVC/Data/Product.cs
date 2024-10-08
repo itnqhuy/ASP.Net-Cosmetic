@@ -29,7 +29,7 @@ public partial class Product
 
     public string IdBrand { get; set; } = null!;
 
-    public string IdCatrgory { get; set; } = null!;
+    public string IdCategory { get; set; } = null!;
 
     public string IdIngredient { get; set; } = null!;
 
@@ -41,7 +41,7 @@ public partial class Product
 
     public virtual Brand IdBrandNavigation { get; set; } = null!;
 
-    public virtual Category IdCatrgoryNavigation { get; set; } = null!;
+    public virtual Category IdCategoryNavigation { get; set; } = null!;
 
     public virtual Image IdImageNavigation { get; set; } = null!;
 

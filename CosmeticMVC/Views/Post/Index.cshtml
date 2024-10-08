@@ -1,4 +1,5 @@
-﻿
+﻿@model IEnumerable<CosmeticMVC.ViewModels.ListPostVM>
+
 @{
     ViewData["Title"] = "Diễn đàn";
     Layout = "_LayoutCustomer";
@@ -219,7 +220,6 @@
             </div>
             <div class="col-lg-8 col-md-7">
                 <div class="row">
-                    @await Component.InvokeAsync("ListPost")
                     <div class="col-lg-12">
                         <div class="product__pagination blog__pagination">
                             <a href="#">1</a>

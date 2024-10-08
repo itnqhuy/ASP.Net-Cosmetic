@@ -14,6 +14,7 @@ namespace CosmeticMVC.ViewComponents
         {
             var data = (from p in db.Posts
                 join prod in db.Products on p.IdProduct equals prod.IdProduct
+                join img in db.Images on prod.IdImage equals img.IdImage
                 select new ListPostVM()
                 {
                     Id_post = p.IdPost,
@@ -25,7 +26,6 @@ namespace CosmeticMVC.ViewComponents
                     Modified_at = p.ModifiedAt,
                     Datebegin = p.Datebegin,
                     Order = p.Order,
-                    Name_product =prod.Name
 
                 }).ToList();
 
