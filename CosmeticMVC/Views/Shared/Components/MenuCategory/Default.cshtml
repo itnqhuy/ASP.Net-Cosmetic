@@ -11,7 +11,7 @@
             <a asp-controller="@controllerName" 
                asp-action="Index" 
                asp-route-category="@item.Id" 
-               class="@(currentCategory == item.Id.ToString() ? "menu-active" : "")"> <!-- So sánh category với Id của item -->
+               class="@(currentCategory == item.Id.ToString() ? "menu-active" : "")">
                 @item.Name
             </a>
         </li>

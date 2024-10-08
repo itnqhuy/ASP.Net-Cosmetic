@@ -29,7 +29,7 @@ namespace CosmeticMVC.Controllers
                 join prod in db.Products on p.IdProduct equals prod.IdProduct
                 join img in db.Images on prod.IdImage equals img.IdImage
                           select new ListPostVM()
-                {
+        {
                     Id_post = p.IdProduct,
                     Content = p.Content,
                     Description = p.Description,
