@@ -684,7 +684,7 @@ ol {
 		}
 
 	.hero__search__form form input {
-		width: 70%;
+		width: 100%;
 		border: none;
 		height: 48px;
 		font-size: 16px;
@@ -2541,7 +2541,10 @@ ol {
 }
 
 	.blog__details__text img {
-		margin-bottom: 30px;
+		height: 500px;
+		width: 500px;
+		display: block;
+		margin: 0 auto 30px auto;
 	}
 
 	.blog__details__text p {

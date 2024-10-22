@@ -16,4 +16,6 @@ public partial class Image
     public DateTime Datebegin { get; set; }
 
     public virtual ICollection<Product> Products { get; set; } = new List<Product>();
+
+    public virtual ICollection<Rate> Rates { get; set; } = new List<Rate>();
 }

@@ -1,0 +1,111 @@
+﻿@model IEnumerable<CosmeticMVC.ViewModels.ListCartItemVM>
+
+@{
+    ViewData["Title"] = "Giỏ hàng";
+    Layout = "_LayoutCustomer";
+}
+
+<!-- Breadcrumb Section Begin -->
+<section class="breadcrumb-section set-bg" data-setbg="@Url.Content("HinhAnh/breadcrumb.png")">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="breadcrumb__text">
+                    <h2>Cosmetic Shop</h2>
+                    <div class="breadcrumb__option">
+                        <a asp-controller="Home" asp-action="Index">Trang Chủ </a>
+                        <span>Giỏ hàng</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Breadcrumb Section End -->
+
+<!-- Shoping Cart Section Begin -->
+<section class="shoping-cart spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="shoping__cart__table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th class="shoping__product">Sản phẩm</th>
+                                <th>Giá</th>
+                                <th>Số lượng</th>
+                                <th>Tổng tiền</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var i in Model)
+                            {
+                                <tr>
+                                    <td class="shoping__cart__item">
+                                        <img src="@Url.Content("HinhAnh/Product/")@i.ProductImage" alt="" width ="70px">
+                                        <h5>
+                                            <a asp-action="Detail" asp-controller="Product" asp-route-id="@i.IdProduct">
+                                                @i.ProductName
+                                            </a>
+                                        </h5>
+                                    </td>
+                                    <td class="shoping__cart__price">
+                                        @i.Price
+                                    </td>
+                                    <td class="shoping__cart__quantity">
+                                        <div class="quantity">
+                                            <div class="pro-qty">
+                                                <input type="text" value="@i.Quantity">
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="shoping__cart__total">
+                                        @i.TotalProduct
+                                    </td>
+                                    <td class="shoping__cart__item__close">
+                                        <a asp-controller="CartItem" asp-action="RemoveFromCartItem" asp-route-id="@i.IdProduct"><span class="icon_close"></span></a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="shoping__cart__btns">
+                    <a href="#" class="primary-btn cart-btn">CONTINUE SHOPPING</a>
+                    <a href="#" class="primary-btn cart-btn cart-btn-right">
+                        <span class="icon_loading"></span>
+                        Upadate Cart
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="shoping__continue">
+                    <div class="shoping__discount">
+                        <h5>Discount Codes</h5>
+                        <form action="#">
+                            <input type="text" placeholder="Enter your coupon code">
+                            <button type="submit" class="site-btn">APPLY COUPON</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="shoping__checkout">
+                    <h5>Cart Total</h5>
+                    <ul>
+                        <li>Subtotal <span>@Model.Sum(item => item.TotalProduct)</span></li>
+                        <li>Total <span>@Model.Sum(item => item.TotalProduct)</span></li> @* * (1 - @Model.Discount) *@
+                    </ul>
+                    <a href="#" class="primary-btn">PROCEED TO CHECKOUT</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Shoping Cart Section End -->

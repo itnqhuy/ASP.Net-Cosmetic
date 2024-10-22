@@ -25,7 +25,7 @@ public partial class Product
 
     public DateTime Datebegin { get; set; }
 
-    public DateTime Exp { get; set; }
+    public string Exp { get; set; } = null!;
 
     public string IdBrand { get; set; } = null!;
 
@@ -34,6 +34,8 @@ public partial class Product
     public string IdIngredient { get; set; } = null!;
 
     public string IdImage { get; set; } = null!;
+
+    public DateTime? Mfg { get; set; }
 
     public virtual ICollection<CartItem> CartItems { get; set; } = new List<CartItem>();
 

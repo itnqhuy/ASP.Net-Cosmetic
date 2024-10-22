@@ -177,6 +177,8 @@ public partial class CosmeticContext : DbContext
 
             entity.ToTable("customer");
 
+            entity.HasIndex(e => e.Phone, "UQ__customer__B43B145F4AE6F433").IsUnique();
+
             entity.Property(e => e.IdCustomer)
                 .HasMaxLength(11)
                 .IsUnicode(false)
@@ -186,7 +188,10 @@ public partial class CosmeticContext : DbContext
             entity.Property(e => e.Email).HasColumnName("email");
             entity.Property(e => e.FullName).HasColumnName("full_name");
             entity.Property(e => e.Password).HasColumnName("password");
-            entity.Property(e => e.Phone).HasColumnName("phone");
+            entity.Property(e => e.Phone)
+                .HasMaxLength(11)
+                .IsUnicode(false)
+                .HasColumnName("phone");
         });
 
         modelBuilder.Entity<Favourite>(entity =>
@@ -452,7 +457,7 @@ public partial class CosmeticContext : DbContext
                 .HasColumnType("text")
                 .HasColumnName("description");
             entity.Property(e => e.Exp)
-                .HasColumnType("smalldatetime")
+                .HasMaxLength(50)
                 .HasColumnName("exp");
             entity.Property(e => e.Hide).HasColumnName("hide");
             entity.Property(e => e.IdBrand)
@@ -475,6 +480,9 @@ public partial class CosmeticContext : DbContext
                 .HasMaxLength(50)
                 .IsUnicode(false)
                 .HasColumnName("meta");
+            entity.Property(e => e.Mfg)
+                .HasColumnType("datetime")
+                .HasColumnName("mfg");
             entity.Property(e => e.Name)
                 .HasMaxLength(300)
                 .HasColumnName("name");
@@ -532,7 +540,7 @@ public partial class CosmeticContext : DbContext
                 .IsUnicode(false)
                 .HasColumnName("id_product");
             entity.Property(e => e.Image)
-                .HasMaxLength(255)
+                .HasMaxLength(11)
                 .IsUnicode(false)
                 .HasColumnName("image");
             entity.Property(e => e.Meta)
@@ -551,6 +559,10 @@ public partial class CosmeticContext : DbContext
                 .HasForeignKey(d => d.IdProduct)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__rate__id_product__4CA06362");
+
+            entity.HasOne(d => d.ImageNavigation).WithMany(p => p.Rates)
+                .HasForeignKey(d => d.Image)
+                .HasConstraintName("FK_rate_image");
         });
 
         modelBuilder.Entity<Staff>(entity =>
