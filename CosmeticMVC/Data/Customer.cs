@@ -17,7 +17,7 @@ public partial class Customer
 
     public int Password { get; set; }
 
-    public int Phone { get; set; }
+    public string Phone { get; set; } = null!;
 
     public virtual ICollection<CartItem> CartItems { get; set; } = new List<CartItem>();
 

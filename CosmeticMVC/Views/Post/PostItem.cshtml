@@ -1,0 +1,30 @@
+﻿@model IEnumerable<CosmeticMVC.ViewModels.ListPostVM>
+
+
+@foreach (var i in Model)
+{
+    <div class="col-lg-6 col-md-6 col-sm-6">
+        <div class="blog__item">
+            <div class="blog__item__pic">
+                <img src="@Url.Content("~/HinhAnh/")@i.Image" alt="">
+            </div>
+            <div class="blog__item__text">
+                <ul>
+                    <li><i class="fa fa-calendar-o"> @i.Modified_at</i></li>
+                    <li><i class="fa fa-comment-o"></i> 5</li>
+                </ul>
+                <h5><a href="#">@i.Content</a></h5>
+                <p>@i.Thumbail</p>
+                <a asp-controller="Post" asp-action="Detail" asp-route-id="@i.Id_post" class="blog__btn">READ MORE <span class="arrow_right"></span></a>
+            </div>
+        </div>
+    </div>
+}
+<div class="col-lg-12">
+    <div class="product__pagination blog__pagination">
+        <a href="#">1</a>
+        <a href="#">2</a>
+        <a href="#">3</a>
+        <a href="#"><i class="fa fa-long-arrow-right"></i></a>
+    </div>
+</div>

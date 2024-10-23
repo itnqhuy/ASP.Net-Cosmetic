@@ -1,0 +1,48 @@
+﻿@model IEnumerable<CosmeticMVC.Data.CartItem>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "_LayoutCustomer";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Quantity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdCustomerNavigation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdProductNavigation)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Quantity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdCustomerNavigation.IdCustomer)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdProductNavigation.IdProduct)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.IdCarditem">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.IdCarditem">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.IdCarditem">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

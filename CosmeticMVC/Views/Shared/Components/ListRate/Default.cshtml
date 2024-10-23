@@ -1,0 +1,24 @@
+﻿@model IEnumerable<CosmeticMVC.ViewModels.ListRateVM>
+
+@{
+    ViewData["Title"] = "Default Rate";
+}
+
+@foreach (var i in Model)
+{
+    <div class="col-lg-3 col-md-3 col-sm-3">
+        <div class="blog__item">
+            <div class="blog__item__pic">
+                <img src="~/HinhAnh/Rate/@i.Image" alt="">
+            </div>
+            <div class="blog__item__text">
+                <ul>
+                    <li><i class="fa fa-calendar-o"></i> @i.DateBegin</li>
+                </ul>
+                <p>
+                    @i.Description
+                </p>
+            </div>
+        </div>
+    </div>
+}

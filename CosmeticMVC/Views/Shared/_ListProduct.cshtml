@@ -1,0 +1,52 @@
+﻿@model IEnumerable<CosmeticMVC.ViewModels.ListProductVM>
+@{
+    ViewData["Title"] = "Cửa hàng";
+    Layout = "_LayoutCustomer";
+}
+
+@RenderSection("Header", required: false)
+
+<!-- Product Section Begin -->
+<section class="product spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-md-5">
+                <div class="sidebar">
+                    <div class="sidebar__item">
+                        <h4>Danh mục</h4>
+                        @await Component.InvokeAsync("MenuCategory")
+                    </div>
+                    <div class="sidebar__item">
+                        <h4>Price</h4>
+                        <div class="price-range-wrap">
+                            <div class="price-range ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content"
+                                 data-min="10" data-max="540">
+                                <div class="ui-slider-range ui-corner-all ui-widget-header"></div>
+                                <span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default"></span>
+                                <span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default"></span>
+                            </div>
+                            <div class="range-slider">
+                                <div class="price-input">
+                                    <input type="text" id="minamount">
+                                    <input type="text" id="maxamount">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-9 col-md-7">
+                <div class="hero__search">
+                    <div class="hero__search__form">
+                        <form asp-action="Search" asp-controller="Category">
+                            <input type="text" placeholder="Nhập tên sản phẩm cần tìm?" name="query">
+                            <button type="submit" class="site-btn">TÌM</button>
+                        </form>
+                    </div>
+                </div>
+                @RenderBody()
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Product Section End -->

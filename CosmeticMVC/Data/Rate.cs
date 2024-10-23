@@ -28,4 +28,6 @@ public partial class Rate
     public virtual Customer IdCustomerNavigation { get; set; } = null!;
 
     public virtual Product IdProductNavigation { get; set; } = null!;
+
+    public virtual Image? ImageNavigation { get; set; }
 }

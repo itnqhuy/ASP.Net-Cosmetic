@@ -1,6 +1,8 @@
 ﻿using CosmeticMVC.Data;
 using CosmeticMVC.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace CosmeticMVC.Controllers
 {
@@ -30,7 +32,7 @@ namespace CosmeticMVC.Controllers
                 join img in db.Images on prod.IdImage equals img.IdImage
                           select new ListPostVM()
         {
-                    Id_post = p.IdProduct,
+                    Id_post = p.IdPost,
                     Content = p.Content,
                     Description = p.Description,
                     Hide = p.Hide,
@@ -41,6 +43,63 @@ namespace CosmeticMVC.Controllers
                     Datebegin = p.Datebegin,
                     Name_product = prod.Name
                 }).ToList();
+
+            return View(result);
+        }
+
+        public IActionResult Search(string? query)
+        {
+            ViewBag.ControllerName = "Post";
+            var posts = db.Posts.AsQueryable();
+            if (query != null)
+            {
+                posts = posts.Where(p => p.Content.Contains(query));
+            }
+
+            var result = posts.Select(p => new ListPostVM()
+            {
+                Id_post = p.IdProduct,
+                Content = p.Content,
+                Description = p.Description,
+                Hide = p.Hide,
+                Thumbail = p.Thumbail,
+                Meta = p.Meta,
+                Image = $"{p.IdProductNavigation.IdImageNavigation.Name.ToString()}.{p.IdProductNavigation.IdImageNavigation.Type.ToString()}",
+                Modified_at = p.ModifiedAt,
+                Datebegin = p.Datebegin,
+                Name_product = p.IdProductNavigation.Name
+            }).ToList();
+
+            return View(result);
+        }
+
+        public IActionResult Detail(String id)
+        {
+            ViewBag.ControllerName = "Post";
+            var p = db.Posts
+                .Include(p => p.IdProductNavigation)
+                .Include(p => p.IdProductNavigation.IdImageNavigation)
+                .SingleOrDefault(p => p.IdPost == id);
+
+            if (p == null)
+            {
+                return Redirect("/404");
+            }
+
+            var result = new DetailPostVM()
+            {
+                Id_post = p.IdProduct,
+                Content = p.Content,
+                Description = p.Description,
+                Hide = p.Hide,
+                Thumbail = p.Thumbail,
+                Meta = p.Meta,
+                Image = $"{p.IdProductNavigation.IdImageNavigation.Name.ToString()}.{p.IdProductNavigation.IdImageNavigation.Type.ToString()}",
+                Modified_at = p.ModifiedAt,
+                Datebegin = p.Datebegin,
+                Name_product = p.IdProductNavigation.Name
+
+            };
 
             return View(result);
         }

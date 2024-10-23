@@ -1,19 +1,33 @@
 using CosmeticMVC.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using CosmeticMVC.ViewModels;
+using CosmeticMVC.Data;
+using Microsoft.Extensions.Logging;
 
 namespace CosmeticMVC.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly CosmeticContext db;
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        // Combine both constructors into one
+        public HomeController(CosmeticContext context, ILogger<HomeController> logger)
         {
+            db = context;
             _logger = logger;
         }
 
         public IActionResult Index()
+        {
+            var categories = db.Categories.AsQueryable();
+            ViewBag.Categories = categories;
+            return View();
+        }
+
+        [Route("/404")]
+        public IActionResult PageNotFound()
         {
             return View();
         }
