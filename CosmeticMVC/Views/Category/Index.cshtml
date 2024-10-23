@@ -27,21 +27,25 @@
 }
 <div class="filter__item">
     <div class="row">
-        <div class="col-lg-6 col-md-6">
+        <div class="col-lg-4 col-md-5">
             <div class="filter__sort">
-                <span>Sort By</span>
-                <form method="get">
-                    <select name="sortOrder">
-                        <option value="0" selected>Default</option>
-                        <option value="1">Giá giảm dần</option>
-                        <option value="2">Giá tăng dần</option>
-                    </select>
-                </form>
+                <span>Sắp xếp theo</span>
+                <select name="sortOrder">
+                    <option value="0" selected>Mặc định</option>
+                    <option value="1">Giá giảm dần</option>
+                    <option value="2">Giá tăng dần</option>
+                </select>
             </div>
         </div>
-        <div class="col-lg-6 col-md-6">
+        <div class="col-lg-4 col-md-3">
             <div class="filter__found">
                 <h6><span>@productCount</span> sản phẩm được tìm thấy</h6>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-3">
+            <div class="filter__option">
+                <span class="icon_grid-2x2"></span>
+                <span class="icon_ul"></span>
             </div>
         </div>
     </div>
@@ -49,6 +53,7 @@
 <div class="row">
     @await Html.PartialAsync("ProductItem")
 </div>
+
 <div class="product__pagination">
     <a href="#">1</a>
     <a href="#">2</a>

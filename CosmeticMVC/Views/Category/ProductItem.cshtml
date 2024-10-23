@@ -6,7 +6,7 @@
         <div class="product__item">
             <div class="product__item__pic set-bg" data-setbg="@Url.Content("~/HinhAnh/Product/" + m.Image)">
                 <ul class="product__item__pic__hover">
-                    <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                    <li><a asp-controller="Favourite" asp-action="AddToCartItem" asp-route-id="@m.Id"><i class="fa fa-heart"></i></a></li>
                     <li><a href="#"><i class="fa fa-retweet"></i></a></li>
                     <li><a asp-action="AddToCartItem" asp-controller="CartItem" asp-route-id="@m.Id"><i class="fa fa-shopping-cart"></i></a></li>
                 </ul>

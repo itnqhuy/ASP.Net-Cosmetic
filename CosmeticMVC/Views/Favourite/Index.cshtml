@@ -1,7 +1,7 @@
-﻿@model IEnumerable<CosmeticMVC.ViewModels.ListCartItemVM>
+﻿@model IEnumerable<CosmeticMVC.ViewModels.ListFavoriteVM>
 
 @{
-    ViewData["Title"] = "Giỏ hàng";
+    ViewData["Title"] = "Yêu thích";
     Layout = "_LayoutCustomer";
 }
 
@@ -14,7 +14,7 @@
                     <h2>Cosmetic Shop</h2>
                     <div class="breadcrumb__option">
                         <a asp-controller="Home" asp-action="Index">Trang Chủ </a>
-                        <span>Giỏ hàng</span>
+                        <span>Yêu thích</span>
                     </div>
                 </div>
             </div>
@@ -22,7 +22,6 @@
     </div>
 </section>
 <!-- Breadcrumb Section End -->
-
 <!-- Shoping Cart Section Begin -->
 <section class="shoping-cart spad">
     <div class="container">
@@ -34,8 +33,6 @@
                             <tr>
                                 <th class="shoping__product">Sản phẩm</th>
                                 <th>Giá</th>
-                                <th>Số lượng</th>
-                                <th>Tổng tiền</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -44,7 +41,7 @@
                             {
                                 <tr>
                                     <td class="shoping__cart__item">
-                                        <img src="@Url.Content("HinhAnh/Product/")@i.ProductImage" alt="" width ="70px">
+                                        <img src="@Url.Content("HinhAnh/Product/")@i.ProductImage" alt="" width="50px">
                                         <h5>
                                             <a asp-action="Detail" asp-controller="Product" asp-route-id="@i.IdProduct">
                                                 @i.ProductName
@@ -53,16 +50,6 @@
                                     </td>
                                     <td class="shoping__cart__price">
                                         @i.Price
-                                    </td>
-                                    <td class="shoping__cart__quantity">
-                                        <div class="quantity">
-                                            <div class="pro-qty">
-                                                <input type="text" value="@i.Quantity">
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="shoping__cart__total">
-                                        @i.TotalProduct
                                     </td>
                                     <td class="shoping__cart__item__close">
                                         <a asp-controller="CartItem" asp-action="RemoveFromCartItem" asp-route-id="@i.IdProduct"><span class="icon_close"></span></a>
@@ -82,27 +69,6 @@
                         <span class="icon_loading"></span>
                         Cập nhật mục yêu thích
                     </a>
-                </div>
-            </div>
-            <div class="col-lg-6">
-                <div class="shoping__continue">
-                    <div class="shoping__discount">
-                        <h5>Mã giảm giá</h5>
-                        <form action="#">
-                            <input type="text" placeholder="Nhập mã giảm giá">
-                            <button type="submit" class="site-btn">ÁP dụng mã giảm giá</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-6">
-                <div class="shoping__checkout">
-                    <h5>Cart Total</h5>
-                    <ul>
-                        <li>Subtotal <span>@Model.Sum(item => item.TotalProduct)</span></li>
-                        <li>Total <span>@Model.Sum(item => item.TotalProduct)</span></li> @* * (1 - @Model.Discount) *@
-                    </ul>
-                    <a href="#" class="primary-btn">Tiến hành thanh toán</a>
                 </div>
             </div>
         </div>
