@@ -1,7 +1,10 @@
-﻿using CosmeticMVC.Data;
+﻿using Azure;
+using CosmeticMVC.Data;
 using CosmeticMVC.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using X.PagedList;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace CosmeticMVC.Controllers
@@ -14,7 +17,7 @@ namespace CosmeticMVC.Controllers
         {
             db = context;
         }
-        public IActionResult Index(string? category)
+        public IActionResult Index(string? category, int? page)
         {
             ViewBag.ControllerName = "Post";
             var posts = db.Posts.AsQueryable();
@@ -44,10 +47,14 @@ namespace CosmeticMVC.Controllers
                     Name_product = prod.Name
                 }).ToList();
 
-            return View(result);
+            int pageSize = 6;
+            int pageNumber = page == null || page < 0 ? 1 : page.Value;
+            PagedList<ListPostVM> lst = new PagedList<ListPostVM>(result, pageNumber, pageSize);
+
+            return View(lst);
         }
 
-        public IActionResult Search(string? query)
+        public IActionResult Search(string? query, int? page)
         {
             ViewBag.ControllerName = "Post";
             var posts = db.Posts.AsQueryable();
@@ -70,7 +77,11 @@ namespace CosmeticMVC.Controllers
                 Name_product = p.IdProductNavigation.Name
             }).ToList();
 
-            return View(result);
+            int pageSize = 6;
+            int pageNumber = page == null || page < 0 ? 1 : page.Value;
+            PagedList<ListPostVM> lst = new PagedList<ListPostVM>(result, pageNumber, pageSize);
+
+            return View(lst);
         }
 
         public IActionResult Detail(String id)
@@ -102,6 +113,11 @@ namespace CosmeticMVC.Controllers
             };
 
             return View(result);
+        }
+
+        public IActionResult Add()
+        {
+            return RedirectToAction("Create","Posts");
         }
     }
 }

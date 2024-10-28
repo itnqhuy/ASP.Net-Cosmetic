@@ -145,6 +145,11 @@ ol {
 	padding-bottom: 100px;
 }
 
+.spadfooter {
+	padding-top: 25px;
+	padding-bottom: 25px;
+}
+
 .text-white h1,
 .text-white h2,
 .text-white h3,
@@ -420,6 +425,10 @@ ol {
 		display: inline-block;
 	}
 
+		.header__logo img {
+			margin-left : 35px;
+		}
+
 .header__menu {
 	padding: 24px 0;
 }
@@ -577,7 +586,11 @@ ol {
 			position: relative;
 		}
 
-			.hero.hero-normal .hero__categories ul {
+		.hero__brands {
+			margin-top: 20px;
+		}
+
+			.hero.hero-normal .hero__categories {
 				display: none;
 				position: absolute;
 				left: 0;
@@ -588,7 +601,7 @@ ol {
 			}
 
 		.hero.hero-normal .hero__search {
-			margin-bottom: 0;
+			margin-bottom: 20px;
 		}
 
 .hero__categories__all {
@@ -620,6 +633,35 @@ ol {
 		color: #ffffff;
 	}
 
+.hero__brands__all {
+	background: #7fad39;
+	position: relative;
+	padding: 10px 25px 10px 40px;
+	cursor: pointer;
+}
+
+	.hero__brands__all i {
+		font-size: 16px;
+		color: #ffffff;
+		margin-right: 10px;
+	}
+
+	.hero__brands__all span {
+		font-size: 18px;
+		font-weight: 700;
+		color: #ffffff;
+	}
+
+	.hero__brands__all:after {
+		position: absolute;
+		right: 18px;
+		top: 9px;
+		content: "3";
+		font-family: "ElegantIcons";
+		font-size: 18px;
+		color: #ffffff;
+	}
+
 .hero__categories ul {
 	border: 1px solid #ebebeb;
 	padding-left: 40px;
@@ -632,6 +674,24 @@ ol {
 	}
 
 		.hero__categories ul li a {
+			font-size: 16px;
+			color: #1c1c1c;
+			line-height: 39px;
+			display: block;
+		}
+
+.hero__brands ul {
+	border: 1px solid #ebebeb;
+	padding-left: 40px;
+	padding-top: 10px;
+	padding-bottom: 12px;
+}
+
+	.hero__brands ul li {
+		list-style: none;
+	}
+
+		.hero__brands ul li a {
 			font-size: 16px;
 			color: #1c1c1c;
 			line-height: 39px;
@@ -1628,13 +1688,25 @@ ol {
 		font-weight: 700;
 	}
 
-.product__pagination,
-.blog__pagination {
+/* Center the pagination nav */
+.product__pagination, .pagination {
+	display: flex;
+	justify-content: center;
 	padding-top: 10px;
 }
 
-	.product__pagination a,
-	.blog__pagination a {
+	/* Style each pagination link */
+	.product__pagination .page-item, .pagination .page-item {
+		text-align: center;
+	}
+
+		.pagination .page-item .page-link {
+			display: flex;
+			align-items: center;
+		}
+
+	/* Apply styles to page links */
+	.product__pagination .page-link, .pagination .page-link {
 		display: inline-block;
 		width: 30px;
 		height: 30px;
@@ -1644,25 +1716,24 @@ ol {
 		font-weight: 700;
 		line-height: 28px;
 		text-align: center;
-		margin-right: 16px;
-		-webkit-transition: all, 0.3s;
-		-moz-transition: all, 0.3s;
-		-ms-transition: all, 0.3s;
-		-o-transition: all, 0.3s;
-		transition: all, 0.3s;
+		margin: 0 8px; /* Space between items */
+		transition: all 0.3s;
 	}
 
-		.product__pagination a:hover,
-		.blog__pagination a:hover {
+		/* Hover effect */
+		.product__pagination .page-link:hover, .pagination .page-link:hover {
 			background: #7fad39;
 			border-color: #7fad39;
 			color: #ffffff;
 		}
 
-		.product__pagination a:last-child,
-		.blog__pagination a:last-child {
-			margin-right: 0;
-		}
+	/* Active page styling */
+	.product__pagination .active .page-link, .pagination .active .page-link {
+		background-color: #7fad39;
+		border-color: #7fad39;
+		color: #ffffff;
+	}
+
 
 /*---------------------
   Shop Details
@@ -1677,7 +1748,7 @@ ol {
 }
 
 	.product__details__pic__item img {
-		min-width: 100%;
+		width : 400px;
 	}
 
 .product__details__pic__slider img {
@@ -2642,6 +2713,16 @@ ol {
 		list-style: none;
 	}
 
+	.footer__about a {
+		color : #000;
+
+	}
+
+	.footer__about a hover {
+		color: #000;
+		opacity : 0.6;
+	}
+
 .footer__about__logo {
 	margin-bottom: 15px;
 }
@@ -2659,6 +2740,7 @@ ol {
 		color: #1c1c1c;
 		font-weight: 700;
 		margin-bottom: 10px;
+		margin-top: 10px;
 	}
 
 	.footer__widget ul {

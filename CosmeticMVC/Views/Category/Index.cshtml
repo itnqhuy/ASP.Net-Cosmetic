@@ -2,7 +2,7 @@
 @{
     ViewData["Title"] = "Cửa hàng";
     Layout = "_ListProduct";
-    var productCount = Model.Count();
+    var productCount = ViewBag.Count;
 }
 
 @section Header
@@ -50,13 +50,4 @@
         </div>
     </div>
 </div>
-<div class="row">
-    @await Html.PartialAsync("ProductItem")
-</div>
-
-<div class="product__pagination">
-    <a href="#">1</a>
-    <a href="#">2</a>
-    <a href="#">3</a>
-    <a href="#"><i class="fa fa-long-arrow-right"></i></a>
-</div>
+@await Html.PartialAsync("ProductItem")

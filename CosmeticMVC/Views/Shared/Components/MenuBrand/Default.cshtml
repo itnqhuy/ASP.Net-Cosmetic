@@ -1,0 +1,13 @@
+﻿@model IEnumerable<CosmeticMVC.ViewModels.MenuBrandVM>
+<ul>
+    @foreach (var item in Model)
+    {
+        <li>
+            <a asp-controller="Category"
+               asp-action="FindBrand"
+               asp-route-brand="@item.Id">
+                @item.Name
+            </a>
+        </li>
+    }
+</ul>

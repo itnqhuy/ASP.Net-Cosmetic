@@ -13,14 +13,16 @@
                 <div class="hero__categories">
                     <div class="hero__categories__all">
                         <i class="fa fa-bars"></i>
-                        <span>Danh mục</span>
+                        <span>Loại sản phẩm</span>
                     </div>
-                    <ul>
-                         @foreach (var i in ViewBag.Categories)
-                         {
-                            <li><a asp-controller ="Category" asp-route-category="@i.IdCategory">@i.Name</a></li>
-                         }
-                    </ul>
+                    @await Component.InvokeAsync("MenuCategory")
+                </div>
+                <div class="hero__brands">
+                    <div class="hero__brands__all">
+                        <i class="fa fa-bars"></i>
+                        <span>Thương hiệu</span>
+                    </div>
+                    @await Component.InvokeAsync("MenuBrand")
                 </div>
             </div>
             <div class="col-lg-9">
@@ -32,12 +34,11 @@
                         </form>
                     </div>
                 </div>
-                <div class="hero__item set-bg" data-setbg="img/hero/banner.jpg">
+                <div class="hero__item set-bg" data-setbg="@Url.Content("~/HinhAnh/bannercosmetic.png")">
                     <div class="hero__text">
-                        <span>FRUIT FRESH</span>
-                        <h2>Vegetable <br />100% Organic</h2>
-                        <p>Free Pickup and Delivery Available</p>
-                        <a href="#" class="primary-btn">SHOP NOW</a>
+                        <h2 style="color : #7FAC39">Cosmetic</h2>
+                        <p>Miễn phí giao hàng cho đơn hàng từ 200.000đ</p>
+                        <a asp-controller="Category" asp-action="Index" class="primary-btn">MUA SẮM NGAY</a>
                     </div>
                 </div>
             </div>

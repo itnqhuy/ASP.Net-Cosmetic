@@ -18,8 +18,9 @@ namespace CosmeticMVC.ViewComponents
                 Name = mn.Name,
                 Meta = mn.Meta,
                 Link = mn.Link,
-                Hide = mn.Hide
-            }).OrderBy(p => p.Name);
+                Hide = mn.Hide,
+                Order = mn.Order
+            }).OrderBy(mn => mn.Order);
 
             return View(data);
         }
