@@ -5,8 +5,8 @@
 <!-- Humberger Begin -->
 <div class="humberger__menu__overlay"></div>
 <div class="humberger__menu__wrapper">
-    <div class="humberger__menu__logo text-center">
-        <a href="#"><img src="img/logo.png" alt=""></a>
+    <div class="humberger__menu__logo" >
+        <a asp-controller="Home" asp-action="Index"><img src="~/HinhAnh/logo.png" alt="" style="margin-left : 50px !important"></a>
     </div>
     <div class="humberger__menu__cart">
         <ul>
@@ -29,9 +29,9 @@
                     <a href="#">Trang</a>
                     <ul class="header__menu__dropdown">
                         <li><a href="./shop-details.html">Chi tiết cửa hàng</a></li>
-                        <li><a a asp-controller="CartItem" asp-action="Index">Giỏ hàng</a></li>
+                        <li><a asp-controller="CartItem" asp-action="Index">Giỏ hàng</a></li>
                         <li><a href="./checkout.html">Thanh Toán</a></li>
-                        <li><a href="./blog-details.html">Blog</a></li>
+                        <li><a asp-controller ="Post" asp-action="Index">Diễn đàn</a></li>
                     </ul>
                 </li>
                 <li class="@(currentController == "Post" ? "active" : "")">
@@ -90,7 +90,7 @@
         <div class="row">
             <div class="col-lg-3">
                 <div class="header__logo">
-                    <a href="./index.html"><img src="img/logo.png" alt=""></a>
+                    <a asp-controller="Home" asp-action="Index"><img src="~/HinhAnh/logo.png" alt="" style="margin-left : 5px !important"></a>
                 </div>
             </div>
             <div class="col-lg-7">

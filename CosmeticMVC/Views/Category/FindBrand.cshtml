@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<CosmeticMVC.ViewModels.ListProductVM>
 @{
-    ViewData["Title"] = "Search";
+    ViewData["Title"] = "Cửa hàng";
     Layout = "_ListProduct";
     var productCount = Model.Count();
 }
@@ -25,7 +25,6 @@
     </section>
     <!-- Breadcrumb Section End -->
 }
-
 <div class="filter__item">
     <div class="row">
         <div class="col-lg-4 col-md-5">
@@ -52,3 +51,4 @@
     </div>
 </div>
 @await Html.PartialAsync("ProductItem")
+

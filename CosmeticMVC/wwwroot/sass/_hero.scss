@@ -76,6 +76,56 @@
     }
 }
 
+.hero__brands__all {
+    background: $primary-color;
+    position: relative;
+    padding: 10px 25px 10px 40px;
+    cursor: pointer;
+
+    i {
+        font-size: 16px;
+        color: $white-color;
+        margin-right: 10px;
+    }
+
+    span {
+        font-size: 18px;
+        font-weight: 700;
+        color: $white-color;
+    }
+
+    &:after {
+        position: absolute;
+        right: 18px;
+        top: 9px;
+        content: '\33';
+        font-family: 'ElegantIcons';
+        font-size: 18px;
+        color: $white-color;
+    }
+}
+
+.hero__brands {
+
+    ul {
+        border: 1px solid $border;
+        padding-left: 40px;
+        padding-top: 10px;
+        padding-bottom: 12px;
+
+        li {
+            list-style: none;
+
+            a {
+                font-size: 16px;
+                color: $normal-color;
+                line-height: 39px;
+                display: block;
+            }
+        }
+    }
+}
+
 .hero__search {
     overflow: hidden;
     margin-bottom: 30px;

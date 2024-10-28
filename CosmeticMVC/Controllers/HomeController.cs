@@ -21,6 +21,7 @@ namespace CosmeticMVC.Controllers
 
         public IActionResult Index()
         {
+            ViewBag.ControllerName = "Category";
             var categories = db.Categories.AsQueryable();
             ViewBag.Categories = categories;
             return View();

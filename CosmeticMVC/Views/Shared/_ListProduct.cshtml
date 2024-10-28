@@ -1,5 +1,4 @@
-﻿@model IEnumerable<CosmeticMVC.ViewModels.ListProductVM>
-@{
+﻿@{
     ViewData["Title"] = "Cửa hàng";
     Layout = "_LayoutCustomer";
 }
@@ -11,11 +10,21 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-3 col-md-5">
-                <div class="sidebar">
-                    <div class="sidebar__item">
-                        <h4>Danh mục</h4>
-                        @await Component.InvokeAsync("MenuCategory")
+                <div class="hero__categories">
+                    <div class="hero__categories__all">
+                        <i class="fa fa-bars"></i>
+                        <span>Loại sản phẩm</span>
                     </div>
+                    @await Component.InvokeAsync("MenuCategory")
+                </div>
+                <div class="hero__brands">
+                    <div class="hero__brands__all">
+                        <i class="fa fa-bars"></i>
+                        <span>Thương hiệu</span>
+                    </div>
+                    @await Component.InvokeAsync("MenuBrand")
+                </div>
+@*              <div class="sidebar">
                     <div class="sidebar__item">
                         <h4>Price</h4>
                         <div class="price-range-wrap">
@@ -33,7 +42,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> *@
             </div>
             <div class="col-lg-9 col-md-7">
                 <div class="hero__search">
@@ -44,9 +53,11 @@
                         </form>
                     </div>
                 </div>
+                
                 @RenderBody()
             </div>
         </div>
     </div>
 </section>
 <!-- Product Section End -->
+

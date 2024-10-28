@@ -44,7 +44,7 @@
                             {
                                 <tr>
                                     <td class="shoping__cart__item">
-                                        <img src="@Url.Content("HinhAnh/Product/")@i.ProductImage" alt="" width ="70px">
+                                        <img src="@Url.Content("HinhAnh/Product/")@i.ProductImage" alt="" width ="50px">
                                         <h5>
                                             <a asp-action="Detail" asp-controller="Product" asp-route-id="@i.IdProduct">
                                                 @i.ProductName
@@ -102,7 +102,7 @@
                         <li>Subtotal <span>@Model.Sum(item => item.TotalProduct)</span></li>
                         <li>Total <span>@Model.Sum(item => item.TotalProduct)</span></li> @* * (1 - @Model.Discount) *@
                     </ul>
-                    <a href="#" class="primary-btn">Tiến hành thanh toán</a>
+                    <a asp-controller="Order" asp-action="CheckOut" class="primary-btn">Tiến hành thanh toán</a>
                 </div>
             </div>
         </div>
