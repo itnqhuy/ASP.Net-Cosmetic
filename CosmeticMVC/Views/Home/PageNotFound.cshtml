@@ -1,10 +1,69 @@
-﻿@using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages
-@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-    ViewData["Title"] = "PageNotFound";
+﻿@{
+    ViewData["Title"] = "Không tìm thấy kết quả";
     Layout = "_LayoutCustomer";
 }
 
-<h3>Khong tim thay noi dung</h3>
+<div class="error-container">
+    <div class="error-content">
+        <h1 class="error-title">404</h1>
+        <h3 class="error-message">Không tìm thấy nội dung</h3>
+        <p class="error-description">Rất tiếc, trang bạn yêu cầu không tồn tại hoặc đã bị xóa.</p>
+        <a asp-action="Index" asp-controller="Home" class="btn btn-primary">Trở về trang chủ</a>
+    </div>
+</div>
+
+<style>
+    /* Error Page Styling */
+    .error-container {
+        display: flex;
+        justify-content: center;
+        height: 400px;
+        background-color: #f8f9fa;
+        padding: 20px;
+    }
+
+    .error-content {
+        text-align: center;
+        padding: 40px;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 400px;
+    }
+
+    .error-title {
+        font-size: 80px;
+        font-weight: bold;
+        color: #ff6f61;
+        margin-bottom: 20px;
+    }
+
+    .error-message {
+        font-size: 24px;
+        color: #333;
+        margin-bottom: 15px;
+    }
+
+    .error-description {
+        font-size: 16px;
+        color: #666;
+        margin-bottom: 30px;
+    }
+
+    .btn {
+        padding: 10px 20px;
+        background-color: #ff6f61;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        text-decoration: none;
+        font-size: 16px;
+        transition: background-color 0.3s ease;
+    }
+
+        .btn:hover {
+            background-color: #e65c4f;
+        }
+
+</style>

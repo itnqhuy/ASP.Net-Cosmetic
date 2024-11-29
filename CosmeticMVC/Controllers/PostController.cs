@@ -1,6 +1,8 @@
 ﻿using Azure;
 using CosmeticMVC.Data;
+using CosmeticMVC.Helpers;
 using CosmeticMVC.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -9,6 +11,7 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace CosmeticMVC.Controllers
 {
+    [Route("bai-viet")]
     public class PostController : Controller
     {
         private readonly CosmeticContext db;
@@ -17,6 +20,8 @@ namespace CosmeticMVC.Controllers
         {
             db = context;
         }
+
+        [Route("cac-bai-viet")]
         public IActionResult Index(string? category, int? page)
         {
             ViewBag.ControllerName = "Post";
@@ -31,21 +36,21 @@ namespace CosmeticMVC.Controllers
             }
 
             var result = (from p in posts
-                join prod in db.Products on p.IdProduct equals prod.IdProduct
-                join img in db.Images on prod.IdImage equals img.IdImage
+                          join prod in db.Products on p.IdProduct equals prod.IdProduct
+                          join img in db.Images on prod.IdImage equals img.IdImage
                           select new ListPostVM()
-        {
-                    Id_post = p.IdPost,
-                    Content = p.Content,
-                    Description = p.Description,
-                    Hide = p.Hide,
-                    Thumbail = p.Thumbail,
-                    Meta = p.Meta,
-                    Image = $"{img.Name.ToString()}.{img.Type.ToString()}",
-                    Modified_at = p.ModifiedAt,
-                    Datebegin = p.Datebegin,
-                    Name_product = prod.Name
-                }).ToList();
+                          {
+                              Id_post = p.IdPost,
+                              Content = p.Content,
+                              Description = p.Description,
+                              Hide = p.Hide,
+                              Thumbail = p.Thumbail,
+                              Meta = p.Meta,
+                              Image = img.Name.ToString(),
+                              Modified_at = p.ModifiedAt,
+                              Datebegin = p.Datebegin,
+                              Name_product = prod.Name
+                          }).ToList();
 
             int pageSize = 6;
             int pageNumber = page == null || page < 0 ? 1 : page.Value;
@@ -53,7 +58,7 @@ namespace CosmeticMVC.Controllers
 
             return View(lst);
         }
-
+        [Route("tim-bai-viet/{query?}/{page?}")]
         public IActionResult Search(string? query, int? page)
         {
             ViewBag.ControllerName = "Post";
@@ -71,7 +76,7 @@ namespace CosmeticMVC.Controllers
                 Hide = p.Hide,
                 Thumbail = p.Thumbail,
                 Meta = p.Meta,
-                Image = $"{p.IdProductNavigation.IdImageNavigation.Name.ToString()}.{p.IdProductNavigation.IdImageNavigation.Type.ToString()}",
+                Image = p.IdProductNavigation.IdImageNavigation.Name.ToString(),
                 Modified_at = p.ModifiedAt,
                 Datebegin = p.Datebegin,
                 Name_product = p.IdProductNavigation.Name
@@ -83,7 +88,7 @@ namespace CosmeticMVC.Controllers
 
             return View(lst);
         }
-
+        [Route("chi-tiet-bai-viet/{id?}")]
         public IActionResult Detail(String id)
         {
             ViewBag.ControllerName = "Post";
@@ -105,7 +110,7 @@ namespace CosmeticMVC.Controllers
                 Hide = p.Hide,
                 Thumbail = p.Thumbail,
                 Meta = p.Meta,
-                Image = $"{p.IdProductNavigation.IdImageNavigation.Name.ToString()}.{p.IdProductNavigation.IdImageNavigation.Type.ToString()}",
+                Image = p.IdProductNavigation.IdImageNavigation.Name.ToString(),
                 Modified_at = p.ModifiedAt,
                 Datebegin = p.Datebegin,
                 Name_product = p.IdProductNavigation.Name
@@ -115,9 +120,52 @@ namespace CosmeticMVC.Controllers
             return View(result);
         }
 
-        public IActionResult Add()
+        [Authorize(AuthenticationSchemes = "CustomerCookie")]
+        [Route("tao-bai-viet")]
+        public IActionResult Create()
         {
-            return RedirectToAction("Create","Posts");
+            // Nếu cần danh sách sản phẩm để chọn
+            ViewBag.Products = db.Products.Select(p => new { p.IdProduct, p.Name }).ToList();
+            return View();
         }
+
+        [Authorize(AuthenticationSchemes = "CustomerCookie")]
+        // Phương thức xử lý tạo bài viết mới
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Route("tao-bai-viet/{model}")]
+        public async Task<IActionResult> Create(CreatePostVM model)
+        {
+            try
+            {
+                // Tạo bài viết mới
+                var newPost = new Post()
+                {
+                    IdPost = Guid.NewGuid().ToString(),
+                    Content = model.Content,
+                    Description = model.Description,
+                    Hide = 0,
+                    Thumbail = "",
+                    Meta = MyUtil.GenerateSlug(model.Content),
+                    IdProduct = model.IdProduct,
+                    ModifiedAt = DateOnly.MaxValue,
+                    Datebegin = DateOnly.MaxValue
+                };
+
+                db.Posts.Add(newPost);
+                await db.SaveChangesAsync();
+
+                // Nếu model không hợp lệ, trả về lại form để người dùng sửa lỗi
+                ViewBag.Products = db.Products.Select(p => new { p.IdProduct, p.Name }).ToList();
+                return View();
+            }
+            catch (Exception ex)
+            {
+                // Log lỗi nếu cần
+                ModelState.AddModelError("", "Đã xảy ra lỗi khi lưu bài viết. Vui lòng thử lại.");
+            }
+            return View();
+        }
+
     }
 }

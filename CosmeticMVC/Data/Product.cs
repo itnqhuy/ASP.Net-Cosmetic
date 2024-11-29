@@ -15,13 +15,13 @@ public partial class Product
 
     public int Quantity { get; set; }
 
-    public int TotalSold { get; set; }
+    public int? TotalSold { get; set; }
 
     public bool Hide { get; set; }
 
     public string Meta { get; set; } = null!;
 
-    public int Order { get; set; }
+    public int? Order { get; set; }
 
     public DateTime Datebegin { get; set; }
 
@@ -30,8 +30,6 @@ public partial class Product
     public string IdBrand { get; set; } = null!;
 
     public string IdCategory { get; set; } = null!;
-
-    public string IdIngredient { get; set; } = null!;
 
     public string IdImage { get; set; } = null!;
 
@@ -46,8 +44,6 @@ public partial class Product
     public virtual Category IdCategoryNavigation { get; set; } = null!;
 
     public virtual Image IdImageNavigation { get; set; } = null!;
-
-    public virtual Ingredient IdIngredientNavigation { get; set; } = null!;
 
     public virtual ICollection<OrderDetail> OrderDetails { get; set; } = new List<OrderDetail>();
 

@@ -7,13 +7,15 @@ public partial class Image
 {
     public string IdImage { get; set; } = null!;
 
-    public string Meta { get; set; } = null!;
+    public string? Meta { get; set; }
 
     public string Name { get; set; } = null!;
 
-    public string Type { get; set; } = null!;
+    public string? Type { get; set; }
 
-    public DateTime Datebegin { get; set; }
+    public DateTime? Datebegin { get; set; }
+
+    public virtual ICollection<Brand> Brands { get; set; } = new List<Brand>();
 
     public virtual ICollection<Product> Products { get; set; } = new List<Product>();
 

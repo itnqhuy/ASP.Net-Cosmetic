@@ -10,15 +10,24 @@
     </div>
     <div class="humberger__menu__cart">
         <ul>
-            @await Component.InvokeAsync("Favourite")
             @await Component.InvokeAsync("Cart")
         </ul>
     </div>
     <div class="humberger__menu__widget">
 
         <div class="header__top__right__auth">
-            <a href="#"><i class="fa fa-user"></i> Đăng nhập</a>
+            @if (User.Identity.IsAuthenticated)
+            {
+                <a asp-action="Profile" asp-controller="Customer"><i class="fa fa-user"></i> @User.Identity.Name |</a>
+                <a asp-action="LogOut" asp-controller="Customer"><i class="fa fa-sign-out"></i> Đăng xuất</a>
+            }
+            else
+            {
+                <a asp-action="Login" asp-controller="Customer"><i class="fa fa-user"></i> Đăng nhập |</a>
+                <a asp-action="Login" asp-controller="Staff"><i class="fa fa-user"></i> Admin</a>
+            }
         </div>
+
     </div>
     <div class="col-lg-6">
         <nav class="header__menu text-center">
@@ -28,10 +37,9 @@
                 <li class="@(currentController == "CartItem" || currentController == "Checkout" ? "active" : "")">
                     <a href="#">Trang</a>
                     <ul class="header__menu__dropdown">
-                        <li><a href="./shop-details.html">Chi tiết cửa hàng</a></li>
                         <li><a asp-controller="CartItem" asp-action="Index">Giỏ hàng</a></li>
-                        <li><a href="./checkout.html">Thanh Toán</a></li>
-                        <li><a asp-controller ="Post" asp-action="Index">Diễn đàn</a></li>
+                        <li><a asp-controller ="Order" asp-action="Index">Lịch sử đơn hàng</a></li>
+                        <li><a asp-action ="Profile" asp-controller="Customer">Thông tin cá nhân</a></li>
                     </ul>
                 </li>
                 <li class="@(currentController == "Post" ? "active" : "")">
@@ -79,8 +87,32 @@
                             <a href="#"><i class="fa fa-pinterest-p"></i></a>
                         </div>
                         <div class="header__top__right__auth">
-                            <a href="#"><i class="fa fa-user"></i> Đăng nhập</a>
+
                         </div>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <div class="header__top__right__auth">
+                                <a asp-action="Profile" asp-controller="Customer"><i class="fa fa-user"></i> @User.Identity.Name   |</a>
+
+                            </div>
+                            <div class="header__top__right__auth">
+                                <a asp-action="LogOut" asp-controller="Customer"><i class="fa fa-sign-out"></i> Đăng xuất</a>
+
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="header__top__right__auth">
+                                <a asp-action="Login" asp-controller="Customer"><i class="fa fa-user"></i> Đăng nhập |</a>
+
+                            </div>
+                            <div class="header__top__right__auth">
+                                <a asp-action="Login" asp-controller="Staff"><i class="fa fa-user"></i> Admin</a>
+
+                            </div>
+                        }
+
+
                     </div>
                 </div>
             </div>
@@ -101,10 +133,9 @@
                         <li class="@(currentController == "CartItem" || currentController == "Checkout" ? "active" : "")">
                             <a href="#">Trang</a>
                             <ul class="header__menu__dropdown">
-                                <li><a href="./shop-details.html">Chi tiết cửa hàng</a></li>
-                                <li><a a asp-controller="CartItem" asp-action="Index">Giỏ hàng</a></li>
-                                <li><a href="./checkout.html">Thanh Toán</a></li>
-                                <li><a href="./blog-details.html">Blog</a></li>
+                                <li><a asp-controller="CartItem" asp-action="Index">Giỏ hàng</a></li>
+                                <li><a asp-controller ="Order" asp-action="Index">Lịch sử đơn hàng</a></li>
+                                <li><a asp-action ="Profile" asp-controller="Customer">Thông tin cá nhân</a></li>
                             </ul>
                         </li>
                         <li class="@(currentController == "Post" ? "active" : "")">
@@ -118,7 +149,6 @@
             <div class="col-lg-2">
                 <div class="header__cart">
                     <ul>
-                        @await Component.InvokeAsync("Favourite")
                         @await Component.InvokeAsync("Cart")
                         </ul>
                 </div>
@@ -130,3 +160,53 @@
     </div>
 </header>
 <!-- Header Section End -->
+
+<style>
+    .avatar-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .avatar-preview {
+        width: 90px;
+        height: 90px;
+        border-radius: 50%;
+        overflow: hidden;
+        border: 2px solid #ddd;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 10px;
+        background-color: #f7f7f7;
+    }
+
+    .avatar-preview {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        overflow: hidden;
+        border: 2px solid #ddd;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #f7f7f7;
+        margin-bottom: 10px;
+        margin-left: auto; /* Added */
+        margin-right: auto; /* Added */
+    }
+
+    .avatar-upload {
+        text-align: center;
+    }
+
+    .avatar-row {
+        justify-content: center; /* Centers the content vertically (if necessary) */
+        text-align: center;
+    }
+
+    .form-control-file {
+        margin-top: 10px; /* Tùy chỉnh khoảng cách trên nếu cần */
+    }
+</style>

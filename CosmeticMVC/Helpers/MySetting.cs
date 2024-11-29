@@ -4,5 +4,7 @@
     {
         public static string CART_KEY = "MYCART";
         public static string FAVOURITE_KEY = "MYFAVOURITE";
+
+        public static string CLAIM_CUSTOMERID = "CustomerID";
     }
 }

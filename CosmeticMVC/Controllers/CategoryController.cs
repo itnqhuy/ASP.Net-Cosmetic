@@ -1,6 +1,7 @@
 ﻿using Azure;
 using CosmeticMVC.Data;
 using CosmeticMVC.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -8,6 +9,7 @@ using X.PagedList;
 
 namespace CosmeticMVC.Controllers
 {
+    [Route("loai-san-pham")]
     public class CategoryController : Controller
     {
         private readonly CosmeticContext db;
@@ -16,14 +18,13 @@ namespace CosmeticMVC.Controllers
         {
             db = context;
         }
-
         public IActionResult Index(string? category, int? page)
         {
             ViewBag.ControllerName = "Category";
             var products = db.Products.AsQueryable();
             if (!string.IsNullOrWhiteSpace(category)) 
             {
-                products = products.Where(p => p.IdCategory.Equals(category));
+                products = products.Where(p => p.IdCategory.Equals(category)).Where(p => p.Hide == false);
             }
 
             var categoryCount = db.Categories.Count(); 
@@ -35,8 +36,9 @@ namespace CosmeticMVC.Controllers
                     Description = p.Description,
                     IdCategory = p.IdCategory,
                     NameCategory = p.IdCategoryNavigation.Name,
+                    Meta = p.Meta,
                     Price = p.Price,
-                    Image = $"{p.IdImageNavigation.Name.ToString()}.{p.IdImageNavigation.Type.ToString()}",
+                    Image = p.IdImageNavigation.Name.ToString(),
                     DiscountedPrice = p.Price *8/10,
                     Count = categoryCount
                 }).ToList();
@@ -49,13 +51,14 @@ namespace CosmeticMVC.Controllers
             return View(lst);
         }
 
+        [Route("{thumbnail?}/{id_brand?}/{page?}")]
         public IActionResult FindBrand(string? brand, int? page)
         {
             ViewBag.ControllerName = "Category";
             var products = db.Products.AsQueryable();
             if (!string.IsNullOrWhiteSpace(brand))
             {
-                products = products.Where(p => p.IdBrand.Equals(brand));
+                products = products.Where(p => p.IdBrand.Equals(brand)).Where(p => p.Hide == false);
             }
 
             var categoryCount = db.Brands.Count();
@@ -67,8 +70,9 @@ namespace CosmeticMVC.Controllers
                 Description = p.Description,
                 IdCategory = p.IdCategory,
                 NameCategory = p.IdCategoryNavigation.Name,
+                Meta = p.Meta,
                 Price = p.Price,
-                Image = $"{p.IdImageNavigation.Name.ToString()}.{p.IdImageNavigation.Type.ToString()}",
+                Image = p.IdImageNavigation.Name.ToString(),
                 DiscountedPrice = p.Price * 8 / 10,
                 Count = categoryCount
             }).ToList();
@@ -79,13 +83,13 @@ namespace CosmeticMVC.Controllers
 
             return View(lst);
         }
-
+        [Route("san-pham-{query}-{page}")]
         public IActionResult Search(string? query, int? page)
         {
             var products = db.Products.AsQueryable();
             if (query != null)
             {
-                products = products.Where(p => p.Name.Contains(query));
+                products = products.Where(p => p.Name.Contains(query)).Where(p => p.Hide == false);
             }
 
             var result = products.Select(p => new ListProductVM
@@ -95,8 +99,9 @@ namespace CosmeticMVC.Controllers
                 Description = p.Description,
                 IdCategory = p.IdCategory,
                 NameCategory = p.IdCategoryNavigation.Name,
+                Meta = p.Meta,
                 Price = p.Price,
-                Image = $"{p.IdImageNavigation.Name.ToString()}.{p.IdImageNavigation.Type.ToString()}",
+                Image = p.IdImageNavigation.Name.ToString(),
                 DiscountedPrice = p.Price * 8 / 10,
             }).ToList();
 

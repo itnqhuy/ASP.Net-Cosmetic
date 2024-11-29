@@ -1,0 +1,72 @@
+﻿@model IEnumerable<CosmeticMVC.Data.Product>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "_LayoutAdmin";
+}
+<style>
+    #layoutSidenav_content {
+        padding-left: 400px !important; /* Set padding-left to 0 for layoutSidenav_content */
+    }
+
+    main .container-fluid.px-4 {
+        padding-top: 0px !important;
+    }
+
+    table th {
+        white-space: nowrap; /* Prevent column headers from wrapping */
+    }
+</style>
+
+<div class="card mb-4">
+    <div class="card-header">
+        <i class="fas fa-table me-1"></i>
+        Danh sách sản phẩm
+    </div>
+    <div class="card-body">
+        <div style="overflow-x: auto; max-width: 100%;">
+            <table id="datatablesSimple" class="table table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th>@Html.DisplayNameFor(model => model.Name)</th>
+                    <th>@Html.DisplayNameFor(model => model.Price)</th>
+                    <th>@Html.DisplayNameFor(model => model.Quantity)</th>
+                    <th>@Html.DisplayNameFor(model => model.TotalSold)</th>
+                    <th>@Html.DisplayNameFor(model => model.Hide)</th>
+                    <th>@Html.DisplayNameFor(model => model.Datebegin)</th>
+                   <th>Chức năng</th>
+                </tr>
+                </thead>
+                <tfoot>
+                <tr>
+                    <th>@Html.DisplayNameFor(model => model.Name)</th>
+                    <th>@Html.DisplayNameFor(model => model.Price)</th>
+                    <th>@Html.DisplayNameFor(model => model.Quantity)</th>
+                    <th>@Html.DisplayNameFor(model => model.TotalSold)</th>
+                    <th>@Html.DisplayNameFor(model => model.Hide)</th>
+                    <th>@Html.DisplayNameFor(model => model.Datebegin)</th>
+                    <th>Chức năng</th>
+                </tr>
+                </tfoot>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@Html.DisplayFor(modelItem => item.Name)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Price)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Quantity)</td>
+                            <td>@Html.DisplayFor(modelItem => item.TotalSold)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Hide)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Datebegin)</td>
+                            <td>
+                                <a asp-action="Edit" asp-route-id="@item.IdProduct">Edit</a> |
+                                <a asp-action="Details" asp-route-id="@item.IdProduct">Details</a> |
+                                <a asp-action="Delete" asp-route-id="@item.IdProduct">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

@@ -13,5 +13,13 @@ public partial class Brand
 
     public string Thumbnail { get; set; } = null!;
 
+    public string Image { get; set; } = null!;
+
+    public bool Hide { get; set; }
+
+    public int Order { get; set; }
+
+    public virtual Image ImageNavigation { get; set; } = null!;
+
     public virtual ICollection<Product> Products { get; set; } = new List<Product>();
 }

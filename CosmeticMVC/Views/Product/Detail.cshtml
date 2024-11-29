@@ -1,9 +1,10 @@
-﻿@model CosmeticMVC.ViewModels.DetailProductVM
+﻿@model CosmeticMVC.ViewModels.ListProductVM.DetailProductVM
 
 @{
     ViewData["Title"] = "Detail";
     Layout = "_LayoutCustomer";
 }
+<div id="notification" class="notification"></div>
 
 <!-- Breadcrumb Section Begin -->
 <section class="breadcrumb-section set-bg" data-setbg="@Url.Content("~/HinhAnh/breadcrumb.png")">
@@ -59,15 +60,15 @@
                     <p>
                         @Model.NameBrand
                     </p>
-                    <form asp-action="AddToCartItem" asp-controller="CartItem" asp-route-id="@Model.Id">
+                    <form id="add-to-cart-form" asp-action="AddToCartItem" asp-controller="CartItem" asp-route-id="@Model.Id" method="post">
                         <div class="product__details__quantity">
                             <div class="quantity">
                                 <div class="pro-qty">
-                                    <input type="text" value="1" name ="quantity">
+                                    <input type="number" value="1" name="quantity" id="quantity-input" min="1">
                                 </div>
                             </div>
                         </div>
-                        <button class="primary-btn">Thêm vào giỏ hàng</button>
+                        <button class="primary-btn" type="submit">Thêm vào giỏ hàng</button>
                         <a href="#" class="heart-icon"><span class="icon_heart_alt"></span></a>
                     </form>
 
@@ -108,7 +109,7 @@
                             <div class="product__details__tab__desc">
                                 <h6>Chi tiết</h6>
                                 <p>
-                                    @Model.Description
+                                    @Html.Raw(Model.Description)
                                 </p>
                             </div>
                         </div>
@@ -123,7 +124,7 @@
                         <div class="tab-pane" id="tabs-3" role="tabpanel">
                             <div class="product__details__tab__desc">
                                 <h6>Đánh giá</h6>
-                                <div class="row">
+                                <div class="column">
                                     @await Component.InvokeAsync("ListRate")
                                 </div>
                             </div>
@@ -147,68 +148,81 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-3 col-md-4 col-sm-6">
-                <div class="product__item">
-                    <div class="product__item__pic set-bg" data-setbg="img/product/product-1.jpg">
-                        <ul class="product__item__pic__hover">
-                            <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                            <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                            <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                        </ul>
-                    </div>
-                    <div class="product__item__text">
-                        <h6><a href="#">Crab Pool Security</a></h6>
-                        <h5>$30.00</h5>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-4 col-sm-6">
-                <div class="product__item">
-                    <div class="product__item__pic set-bg" data-setbg="img/product/product-2.jpg">
-                        <ul class="product__item__pic__hover">
-                            <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                            <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                            <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                        </ul>
-                    </div>
-                    <div class="product__item__text">
-                        <h6><a href="#">Crab Pool Security</a></h6>
-                        <h5>$30.00</h5>
+            @foreach (var product in ViewBag.RelatedProducts)
+            {
+                <div class="col-lg-3 col-md-4 col-sm-6">
+                    <div class="product__item">
+                        <div class="product__item__pic set-bg" data-setbg="@Url.Content("~/HinhAnh/Product/")@product.Image">
+                            <ul class="product__item__pic__hover">
+                                <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                                <li><a href="#"><i class="fa fa-retweet"></i></a></li>
+                                <li><a asp-action="Detail" asp-route-id="@product.Id"><i class="fa fa-shopping-cart"></i></a></li>
+                            </ul>
+                        </div>
+                        <div class="product__item__text">
+                            <h6><a asp-action="Detail" asp-route-id="@product.Id">@product.Name</a></h6>
+                            <h5>@product.Price đ</h5>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-lg-3 col-md-4 col-sm-6">
-                <div class="product__item">
-                    <div class="product__item__pic set-bg" data-setbg="img/product/product-3.jpg">
-                        <ul class="product__item__pic__hover">
-                            <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                            <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                            <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                        </ul>
-                    </div>
-                    <div class="product__item__text">
-                        <h6><a href="#">Crab Pool Security</a></h6>
-                        <h5>$30.00</h5>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-4 col-sm-6">
-                <div class="product__item">
-                    <div class="product__item__pic set-bg" data-setbg="img/product/product-7.jpg">
-                        <ul class="product__item__pic__hover">
-                            <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                            <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                            <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                        </ul>
-                    </div>
-                    <div class="product__item__text">
-                        <h6><a href="#">Crab Pool Security</a></h6>
-                        <h5>$30.00</h5>
-                    </div>
-                </div>
-            </div>
+            }
         </div>
     </div>
 </section>
-<!-- Related Product Section End -->
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#add-to-cart-form').submit(function (event) {
+            event.preventDefault(); // Ngừng việc gửi form mặc định
+
+            // Lấy giá trị của quantity từ input
+            var quantity = $('#quantity-input').val();
+
+            // Lấy giá trị của product id từ route
+            var productId = '@Model.Id';  // Lấy ID từ Razor model
+
+            // Tạo URL động cho action AddToCartItem
+            var url = '/gio-hang/them-vao-gio-hang-' + productId + '-' + quantity;
+
+            // Gửi request Ajax
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: { id: productId, quantity: quantity },
+                success: function (response) {
+                    if (response.success) {
+                        showNotification("Sản phẩm đã được thêm vào giỏ hàng!");
+                        updateCartQuantity(response.cartQuantity);
+                    } else {
+                        showNotification(response.message, true);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error(error);
+                    showNotification("Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng", true);
+                }
+            });
+        });
+    });
+</script>
+
+<style>
+    .notification {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background-color: #7FAD39; /* Màu nền xanh lá cho thông báo thành công */
+        color: white;
+        padding: 10px;
+        border-radius: 5px;
+        display: none; /* Ban đầu ẩn */
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        z-index: 1000;
+    }
+
+        .notification.error {
+            background-color: #f44336; /* Màu nền đỏ cho thông báo lỗi */
+        }
+
+</style>

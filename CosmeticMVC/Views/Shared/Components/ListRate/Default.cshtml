@@ -1,24 +1,85 @@
 ﻿@model IEnumerable<CosmeticMVC.ViewModels.ListRateVM>
 
 @{
-    ViewData["Title"] = "Default Rate";
+    ViewData["Title"] = "Đánh giá sản phẩm";
 }
 
-@foreach (var i in Model)
+@foreach (var rate in Model)
 {
-    <div class="col-lg-3 col-md-3 col-sm-3">
-        <div class="blog__item">
-            <div class="blog__item__pic">
-                <img src="~/HinhAnh/Rate/@i.Image" alt="">
+    <div class="rate-item row mb-4">
+        <div class="col-lg-2 col-md-3 col-sm-3">
+            <div class="user-avatar">
+                <img src="~/HinhAnh/avtdefault.png" alt="User Avatar" class="user-avatar">
             </div>
-            <div class="blog__item__text">
-                <ul>
-                    <li><i class="fa fa-calendar-o"></i> @i.DateBegin</li>
-                </ul>
-                <p>
-                    @i.Description
-                </p>
+        </div>
+        <div class="col-lg-10 col-md-9 col-sm-9">
+            <div class="rate-content">
+                <div class="rate-header">
+                    <span class="user-name font-weight-bold">@rate.NameCustomer</span>
+                    <span class="rate-date text-muted ml-3"><i class="fa fa-calendar-o"></i> @rate.DateBegin.ToString("dd/MM/yyyy")</span>
+                </div>
+                <div class="rate-stars mb-2">
+                    @for (int i = 0; i < rate.Star; i++)
+                    {
+                        <i class="fa fa-star text-warning"></i>
+                    }
+                    @for (int i = rate.Star; i < 5; i++)
+                    {
+                        <i class="fa fa-star-o text-warning"></i>
+                    }
+                </div>
+                <div class="rate-description">
+                    <p>@rate.Description</p>
+                </div>
             </div>
         </div>
     </div>
 }
+
+<style>
+
+    .rate-item {
+        border-bottom: 1px solid #ddd;
+        padding-bottom: 15px;
+        margin-bottom: 15px;
+    }
+
+        .rate-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+    .user-avatar img {
+        border: 2px solid #8BB44C;
+        padding: 2px;
+    }
+
+    .rate-content {
+        padding-left: 15px;
+    }
+
+    .rate-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 5px;
+    }
+
+    .rate-stars i {
+        font-size: 16px;
+        margin-right: 2px;
+    }
+
+    .rate-description {
+        font-size: 14px;
+        color: #333;
+    }
+
+    .user-avatar {
+        width: 55.84px; /* Chiều rộng và chiều cao cần giống nhau để tạo hình tròn */
+        height: 55.84px; /* Chiều rộng và chiều cao cần giống nhau để tạo hình tròn */
+        object-fit: cover; /* Đảm bảo ảnh luôn vừa khít trong khung */
+        border-radius: 100%; /* Làm tròn 100% tạo thành hình tròn */
+        overflow: hidden; /* Đảm bảo không có phần thừa nào của ảnh */
+    }
+
+</style>

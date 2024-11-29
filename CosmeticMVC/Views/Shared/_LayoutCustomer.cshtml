@@ -20,20 +20,23 @@
     <link rel="stylesheet" href="~/css/owl.carousel.min.css" type="text/css">
     <link rel="stylesheet" href="~/css/slicknav.min.css" type="text/css">
     <link rel="stylesheet" href="~/css/style.css" type="text/css">
+    <script src="~/plugin/ckeditor/ckeditor.js"></script>
 </head>
 <body>
-<div>
-    @await Html.PartialAsync("_Header")
-    <div style="min-height: 400px;">
-        @RenderBody()
-    </div>
+    <div>
+        @await Html.PartialAsync("_Header")
+        <div style="min-height: 400px;">
+            @RenderBody()
+        </div>
 
-    @await Html.PartialAsync("_Footer")
-</div>
+        @await Html.PartialAsync("_Footer")
+    </div>
 
     <div id="preloder">
         <div class="loader"></div>
     </div>
+    <div id="notification" class="notification"></div>
+
 
     <!-- Js Plugins -->
     <script src="~/js/jquery-3.3.1.min.js"></script>

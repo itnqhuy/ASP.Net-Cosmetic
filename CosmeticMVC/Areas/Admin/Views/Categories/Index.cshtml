@@ -1,0 +1,64 @@
+﻿@model IEnumerable<CosmeticMVC.Data.Category>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "_LayoutAdmin";
+}
+<style>
+    main .container-fluid.px-4 {
+        padding-top: 0px !important;
+    }
+    #layoutSidenav_content {
+        padding-left: 400px !important; /* Adjust layout padding */
+    }
+</style>
+
+<div class="card mb-4">
+    <div class="card-header">
+        <i class="fas fa-table me-1"></i>
+        Danh sách loại sản phẩm
+    </div>
+    <div class="card-body">
+        <div style="overflow-x: auto; max-width: 100%;">
+            <table id="datatablesSimple" class="table table-bordered table-hover" style="white-space: nowrap">
+                <thead>
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.Name)</th>
+                        <th>@Html.DisplayNameFor(model => model.Meta)</th>
+                        <th>@Html.DisplayNameFor(model => model.Hide)</th>
+                        <th>@Html.DisplayNameFor(model => model.Order)</th>
+                        <th>@Html.DisplayNameFor(model => model.Datebegin)</th>
+                        <th>Chức năng</th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.Name)</th>
+                        <th>@Html.DisplayNameFor(model => model.Meta)</th>
+                        <th>@Html.DisplayNameFor(model => model.Hide)</th>
+                        <th>@Html.DisplayNameFor(model => model.Order)</th>
+                        <th>@Html.DisplayNameFor(model => model.Datebegin)</th>
+                        <th>Chức năng</th>
+                    </tr>
+                </tfoot>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@Html.DisplayFor(modelItem => item.Name)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Meta)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Hide)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Order)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Datebegin)</td>
+                            <td>
+                                <a asp-action="Edit" asp-route-id="@item.IdCategory">Edit</a> |
+                                <a asp-action="Details" asp-route-id="@item.IdCategory">Details</a> |
+                                <a asp-action="Delete" asp-route-id="@item.IdCategory">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

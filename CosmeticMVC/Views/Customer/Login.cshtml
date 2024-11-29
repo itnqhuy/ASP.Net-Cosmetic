@@ -1,0 +1,249 @@
+﻿@model CosmeticMVC.ViewModels.LoginVM
+
+@{
+    Layout = "_LayoutAuthentication";
+    ViewData["Title"] = "Đăng nhập";
+}
+
+<div id="loginPage">
+    <div class="left-panel">
+        <div class="info-container">
+            <a asp-controller="Home" asp-action="Index"><img src="~/HinhAnh/logo.png" alt="Logo" class="logo"></a>
+            <p class="subtitle">Vui lòng đăng nhập để tiếp tục sử dụng dịch vụ của chúng tôi.</p>
+        </div>
+    </div>
+    <div class="right-panel">
+        <div class="login-container bg-light card shadow-sm">
+            <h3 class="user-info-title">ĐĂNG NHẬP</h3>
+            
+            <!-- Hiển thị tất cả lỗi từ ModelState -->
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <div class="alert alert-danger">
+                    @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                    {
+                        <p>@error.ErrorMessage</p>
+                    }
+                </div>
+            }
+
+            <form asp-action="Login" method="post" asp-route-ReturnUrl="@ViewBag.ReturnUrl" class="login-form">
+                <div class="form-row">
+                    <div class="input-group">
+                        <input asp-for="UserName" placeholder="Tên đăng nhập" class="input-field" required>
+                        <i class="fa fa-envelope input-icon"></i>
+                        <span asp-validation-for="UserName" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="input-group">
+                        <input asp-for="Password" type="password" placeholder="Mật khẩu" class="input-field" required>
+                        <i class="fa fa-lock input-icon"></i>
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="form-options">
+                    <label>
+                        <input type="checkbox" name="remember" class="checkbox"> Nhớ tài khoản
+                    </label>
+                    <a asp-controller="Customer" asp-action="" class="forgot-password">Quên mật khẩu?</a>
+                </div>
+
+                <button type="submit" class="btn-login">Đăng nhập</button>
+            </form>
+            <hr class="divider">
+            <div class="signup-text">
+                Bạn chưa có tài khoản? <a asp-action="Registry" asp-controller="Customer" class="signup-link">Đăng ký ngay</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* General Styles for Body */
+    body {
+        margin: 0;
+        font-family: 'Poppins', sans-serif;
+        height: 100vh;
+        overflow: hidden;
+    }
+
+    /* Page Container */
+    #loginPage {
+        display: flex;
+        width: 950px;
+        height: 100%;
+    }
+
+    /* Left Panel (Information) */
+    .left-panel {
+        height: 355px;
+        width: 33.33%;
+        background: #8BB44C; /* Màu xanh đậm hơn #8BB44C */
+        color: #000;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-top-left-radius: 30px; /* Bo góc trên trái */
+        border-bottom-left-radius: 30px; /* Bo góc dưới trái */
+        box-shadow: 10px 0 30px rgba(0, 0, 0, 0.2); /* Đổ bóng mạnh hơn cho panel trái */
+    }
+
+    .info-container {
+        max-width: 300px;
+    }
+
+        .info-container .logo {
+            width: 120px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3); /* Đổ bóng cho logo */
+            border-radius: 10px; /* Thêm bo góc nhẹ cho logo */
+        }
+
+    .user-info-title {
+        font-size: 24px; /* Kích thước chữ cho tiêu đề */
+        font-weight: bold;
+        color: #000;
+        margin-bottom: 10px;
+    }
+
+    .subtitle {
+        color: #fff;
+        font-size: 14px;
+        margin-bottom: 20px;
+    }
+
+    /* Right Panel (Form) */
+    .right-panel {
+        width: 66.67%;
+        background: #f7f7f7;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-top-right-radius: 30px; /* Bo góc trên phải */
+        border-bottom-right-radius: 30px; /* Bo góc dưới phải */
+        box-shadow: -10px 0 30px rgba(0, 0, 0, 0.2); /* Đổ bóng mạnh hơn cho panel phải */
+    }
+
+    /* Login Container */
+    .login-container {
+        border-top-right-radius: 30px; /* Bo góc trên phải */
+        border-bottom-right-radius: 30px; /* Bo góc dưới phải */
+        padding: 30px;
+        width: 100%;
+        max-width: 650px; /* Tăng chiều rộng tối đa của form để rộng hơn */
+        text-align: center;
+        background: #ffffff;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2); /* Đổ bóng mạnh hơn cho khối đăng ký */
+    }
+
+    /* Form Styles */
+    .login-form {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .form-row {
+        display: flex;
+        gap: 15px;
+        align-items: center;
+    }
+
+    .input-group {
+        position: relative;
+        width: 100%;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); /* Đổ bóng mạnh hơn cho mỗi ô nhập liệu */
+    }
+
+    .input-field {
+        width: 100%;
+        padding: 10px 15px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 14px;
+    }
+
+    .input-icon {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #aaa;
+    }
+
+    .input-field:focus {
+        border-color: #8BB44C; /* Đổi màu khi focus sang #8BB44C */
+        box-shadow: 0 0 8px rgba(139, 180, 76, 0.6); /* Đổ bóng mạnh hơn khi focus */
+        outline: none;
+    }
+
+    .form-options {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 14px;
+    }
+
+    .checkbox {
+        margin-right: 5px;
+    }
+
+    .forgot-password {
+        color: #8BB44C;
+        text-decoration: none;
+    }
+
+        .forgot-password:hover {
+            text-decoration: underline;
+        }
+
+    /* Button Styles */
+    .btn-login {
+        background: #8BB44C; /* Màu nút là #8BB44C */
+        color: #fff;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background 0.3s ease, box-shadow 0.3s ease;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2); /* Đổ bóng mạnh hơn cho nút đăng nhập */
+    }
+
+        .btn-login:hover {
+            background: #76993e; /* Tông màu đậm hơn khi hover */
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25); /* Tăng đổ bóng khi hover */
+        }
+
+    /* Divider and Signup Link */
+    .divider {
+        margin: 20px 0;
+        border: none;
+        border-top: 1px solid #ddd;
+    }
+
+    .signup-text {
+        font-size: 14px;
+        color: #666;
+    }
+
+    .signup-link {
+        color: #8BB44C; /* Đổi màu của link sang #8BB44C */
+        text-decoration: none;
+    }
+
+        .signup-link:hover {
+            text-decoration: underline;
+        }
+
+    /* Validation Styles */
+    .text-danger {
+        color: #ff0000;
+        font-size: 12px;
+        text-align: left;
+    }
+</style>

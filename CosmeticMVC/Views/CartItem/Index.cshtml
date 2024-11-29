@@ -22,7 +22,6 @@
     </div>
 </section>
 <!-- Breadcrumb Section End -->
-
 <!-- Shoping Cart Section Begin -->
 <section class="shoping-cart spad">
     <div class="container">
@@ -44,9 +43,9 @@
                             {
                                 <tr>
                                     <td class="shoping__cart__item">
-                                        <img src="@Url.Content("HinhAnh/Product/")@i.ProductImage" alt="" width ="50px">
+                                        <img src="@Url.Content("HinhAnh/Product/")@i.ProductImage" alt="" width="50px">
                                         <h5>
-                                            <a asp-action="Detail" asp-controller="Product" asp-route-id="@i.IdProduct">
+                                            <a asp-action="Detail" asp-controller="Product" asp-route-id="@i.IdProduct" class="namecartitem" style="color: #000">
                                                 @i.ProductName
                                             </a>
                                         </h5>
@@ -57,15 +56,16 @@
                                     <td class="shoping__cart__quantity">
                                         <div class="quantity">
                                             <div class="pro-qty">
-                                                <input type="text" value="@i.Quantity">
+                                                <input type="number" value="@i.Quantity" data-product-id="@i.IdProduct" class="quantity-input" min="1">
                                             </div>
                                         </div>
                                     </td>
+
                                     <td class="shoping__cart__total">
                                         @i.TotalProduct
                                     </td>
                                     <td class="shoping__cart__item__close">
-                                        <a asp-controller="CartItem" asp-action="RemoveFromCartItem" asp-route-id="@i.IdProduct"><span class="icon_close"></span></a>
+                                        <a href="javascript:void(0);" class="remove-item" data-product-id="@i.IdProduct"><span class="icon_close"></span></a>
                                     </td>
                                 </tr>
                             }
@@ -75,15 +75,6 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-12">
-                <div class="shoping__cart__btns">
-                    <a href="#" class="primary-btn cart-btn">Tiếp tục mua hàng</a>
-                    <a href="#" class="primary-btn cart-btn cart-btn-right">
-                        <span class="icon_loading"></span>
-                        Cập nhật mục yêu thích
-                    </a>
-                </div>
-            </div>
             <div class="col-lg-6">
                 <div class="shoping__continue">
                     <div class="shoping__discount">
@@ -97,15 +88,127 @@
             </div>
             <div class="col-lg-6">
                 <div class="shoping__checkout">
-                    <h5>Cart Total</h5>
+                    <h5>Tổng tiền</h5>
                     <ul>
-                        <li>Subtotal <span>@Model.Sum(item => item.TotalProduct)</span></li>
-                        <li>Total <span>@Model.Sum(item => item.TotalProduct)</span></li> @* * (1 - @Model.Discount) *@
+                        <li>Tổng cộng <span id="cartSubtotal">@Model.Sum(item => item.TotalProduct)</span></li>
+                        <li>Thành tiền <span id="cartTotal">@Model.Sum(item => item.TotalProduct)</span></li> @* * (1 - @Model.Discount) *@
                     </ul>
-                    <a asp-controller="Order" asp-action="CheckOut" class="primary-btn">Tiến hành thanh toán</a>
+                    <a href="/gio-hang/xac-nhan" class="primary-btn">Tiến hành thanh toán</a>
                 </div>
             </div>
+
         </div>
     </div>
 </section>
 <!-- Shoping Cart Section End -->
+
+<style>
+    /* Ẩn nút tăng/giảm của input type="number" trên tất cả các trình duyệt */
+    .quantity-input::-webkit-outer-spin-button,
+    .quantity-input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    .quantity-input[type="number"] {
+        -moz-appearance: textfield;
+    }
+
+</style>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // Xử lý sự kiện khi nhấn nút "+" hoặc "-" để thay đổi số lượng sản phẩm
+        $(document).on('click', '.qtybtn', function () {
+            var $button = $(this);
+            var input = $button.siblings('input');
+            var currentValue = parseInt(input.val());
+            var productId = input.data('product-id');
+
+            if ($button.hasClass('plus')) {
+                currentValue++;
+            } else if ($button.hasClass('minus')) {
+                currentValue = currentValue > 1 ? currentValue - 1 : 1; // Đảm bảo không giảm xuống dưới 1
+            }
+
+            input.val(currentValue);
+
+            // Gửi yêu cầu cập nhật số lượng sản phẩm bằng Ajax
+            updateCartQuantity(productId, currentValue);
+        });
+
+        // Hàm để gửi yêu cầu cập nhật số lượng sản phẩm lên server
+        function updateCartQuantity(productId, newQuantity) {
+            // Cập nhật URL cho đúng route controller
+            $.ajax({
+                url: '/gio-hang/cap-nhat-gio-hang/' + productId + '/' + newQuantity,  // Điều chỉnh URL
+                type: 'POST',
+                success: function (response) {
+                    if (response.success) {
+                        // Cập nhật lại tổng tiền cho sản phẩm và tổng tiền giỏ hàng
+                        updateProductTotal(response.productId, response.newTotal);
+                        updateCartTotal(response.cartTotal);
+                    } else {
+                        alert('Có lỗi xảy ra khi cập nhật giỏ hàng.');
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error(error);
+                    alert('Đã xảy ra lỗi khi cập nhật giỏ hàng.');
+                }
+            });
+        }
+
+        // Hàm để cập nhật tổng tiền của sản phẩm trên giao diện
+        function updateProductTotal(productId, newTotal) {
+            $('input[data-product-id="' + productId + '"]').closest('tr').find('.shoping__cart__total').text(Math.round(newTotal));
+        }
+
+        // Hàm để cập nhật tổng tiền của giỏ hàng trên giao diện
+        function updateCartTotal(newCartTotal) {
+            $('#cartSubtotal').text(Math.round(newCartTotal));
+            $('#cartTotal').text(Math.round(newCartTotal));
+        }
+
+        // Xóa sản phẩm khỏi giỏ hàng
+        $(document).on('click', '.remove-item', function () {
+            var productId = $(this).data('product-id');
+            var row = $(this).closest('tr');
+
+            // Cập nhật URL cho đúng route controller
+            $.ajax({
+                url: '/gio-hang/xoa-khoi-gio-hang/' + productId,  // Điều chỉnh URL
+                type: 'POST',
+                success: function (response) {
+                    if (response.success) {
+                        row.remove(); // Xóa dòng sản phẩm khỏi bảng
+                        updateCartTotal(response.cartTotal); // Cập nhật tổng tiền giỏ hàng sau khi xóa
+                    } else {
+                        alert('Có lỗi xảy ra khi xóa sản phẩm khỏi giỏ hàng.');
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error(error);
+                    alert('Đã xảy ra lỗi khi xóa sản phẩm khỏi giỏ hàng.');
+                }
+            });
+        });
+    });
+
+    $(document).ready(function () {
+        // Chỉ cho phép nhập số dương vào ô số lượng
+        $(document).on('input', '.quantity-input', function () {
+            var value = parseInt($(this).val());
+            if (isNaN(value) || value <= 0) {
+                $(this).val(1); // Đặt về 1 nếu giá trị nhập vào không hợp lệ
+            }
+        });
+    });
+
+</script>
+
+
+
+
+
