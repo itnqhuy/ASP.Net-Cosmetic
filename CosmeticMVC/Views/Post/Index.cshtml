@@ -35,20 +35,6 @@
                             <button type="submit"><span class="icon_search"></span></button>
                         </form>
                     </div>
-                    <div class="hero__categories">
-                        <div class="hero__categories__all">
-                            <i class="fa fa-bars"></i>
-                            <span>Loại sản phẩm</span>
-                        </div>
-                        @await Component.InvokeAsync("MenuCategory")
-                    </div>
-                    <div class="hero__brands">
-                        <div class="hero__brands__all">
-                            <i class="fa fa-bars"></i>
-                            <span>Thương hiệu</span>
-                        </div>
-                        @await Component.InvokeAsync("MenuBrand")
-                    </div>
                     <div class="blog__sidebar__item"></div>
                     <div class="blog__sidebar__item">
                         <h4>Phổ biến</h4>
@@ -60,10 +46,25 @@
                 </div>
             </div>
             <div class="col-lg-8 col-md-7">
-                @await Html.PartialAsync("PostItem")
+                <div class="d-flex justify-content-end mb-3">
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <a asp-controller="Post" asp-action="Create" class="btn btn-primary" id="createPostBtn">
+                            <i class="fa fa-plus"></i> Tạo bài viết
+                        </a>
+                    }
+                </div>
 
+                @await Html.PartialAsync("PostItem")
             </div>
         </div>
     </div>
 </section>
 <!-- Blog Section End -->
+
+<script>
+        document.getElementById('createPostBtn').addEventListener('click', function (event) {
+            event.preventDefault();  // Ngừng hành động mặc định của liên kết
+            window.location.href = '@Url.Content("~/bai-viet/tao-bai-viet")';  // Điều hướng đến đường dẫn bai-viet/tao-bai-viet
+        });
+    </script>

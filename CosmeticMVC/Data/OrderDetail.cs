@@ -7,7 +7,7 @@ public partial class OrderDetail
 {
     public int Quantity { get; set; }
 
-    public string Status { get; set; } = null!;
+    public int IdStatus { get; set; }
 
     public string IdDetail { get; set; } = null!;
 
@@ -15,7 +15,13 @@ public partial class OrderDetail
 
     public string IdProduct { get; set; } = null!;
 
+    public double Discount { get; set; }
+
+    public double UnitPrice { get; set; }
+
     public virtual Order IdOrderNavigation { get; set; } = null!;
 
     public virtual Product IdProductNavigation { get; set; } = null!;
+
+    public virtual Status IdStatusNavigation { get; set; } = null!;
 }

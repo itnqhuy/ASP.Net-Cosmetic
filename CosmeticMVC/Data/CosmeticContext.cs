@@ -29,8 +29,6 @@ public partial class CosmeticContext : DbContext
 
     public virtual DbSet<Image> Images { get; set; }
 
-    public virtual DbSet<Ingredient> Ingredients { get; set; }
-
     public virtual DbSet<Menu> Menus { get; set; }
 
     public virtual DbSet<Order> Orders { get; set; }
@@ -44,6 +42,8 @@ public partial class CosmeticContext : DbContext
     public virtual DbSet<Rate> Rates { get; set; }
 
     public virtual DbSet<Staff> Staff { get; set; }
+
+    public virtual DbSet<Status> Statuses { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
@@ -64,12 +64,23 @@ public partial class CosmeticContext : DbContext
             entity.Property(e => e.Datebegin)
                 .HasColumnType("smalldatetime")
                 .HasColumnName("datebegin");
+            entity.Property(e => e.Hide).HasColumnName("hide");
+            entity.Property(e => e.Image)
+                .HasMaxLength(11)
+                .IsUnicode(false)
+                .HasColumnName("image");
             entity.Property(e => e.Name)
                 .HasMaxLength(255)
                 .HasColumnName("name");
+            entity.Property(e => e.Order).HasColumnName("order");
             entity.Property(e => e.Thumbnail)
                 .HasMaxLength(255)
                 .HasColumnName("thumbnail");
+
+            entity.HasOne(d => d.ImageNavigation).WithMany(p => p.Brands)
+                .HasForeignKey(d => d.Image)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_brand_image");
         });
 
         modelBuilder.Entity<CartItem>(entity =>
@@ -99,7 +110,7 @@ public partial class CosmeticContext : DbContext
             entity.HasOne(d => d.IdProductNavigation).WithMany(p => p.CartItems)
                 .HasForeignKey(d => d.IdProduct)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__cart_item__id_pr__534D60F1");
+                .HasConstraintName("FK__cart_item__id_pr__1DB06A4F");
         });
 
         modelBuilder.Entity<Category>(entity =>
@@ -168,7 +179,7 @@ public partial class CosmeticContext : DbContext
             entity.HasOne(d => d.IdPostNavigation).WithMany(p => p.Comments)
                 .HasForeignKey(d => d.IdPost)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__comment__id_post__60A75C0F");
+                .HasConstraintName("FK__comment__id_post__29221CFB");
         });
 
         modelBuilder.Entity<Customer>(entity =>
@@ -183,15 +194,46 @@ public partial class CosmeticContext : DbContext
                 .HasMaxLength(11)
                 .IsUnicode(false)
                 .HasColumnName("id_customer");
-            entity.Property(e => e.Address).HasColumnName("address");
-            entity.Property(e => e.CreateAt).HasColumnName("create_at");
-            entity.Property(e => e.Email).HasColumnName("email");
-            entity.Property(e => e.FullName).HasColumnName("full_name");
-            entity.Property(e => e.Password).HasColumnName("password");
+            entity.Property(e => e.Address)
+                .HasMaxLength(60)
+                .HasColumnName("address");
+            entity.Property(e => e.Avatar)
+                .HasMaxLength(20)
+                .HasDefaultValue("avtdefault.png")
+                .HasColumnName("avatar");
+            entity.Property(e => e.Birthday)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime")
+                .HasColumnName("birthday");
+            entity.Property(e => e.CreateAt)
+                .HasColumnType("datetime")
+                .HasColumnName("create_at");
+            entity.Property(e => e.Email)
+                .HasMaxLength(50)
+                .HasColumnName("email");
+            entity.Property(e => e.FullName)
+                .HasMaxLength(50)
+                .HasColumnName("full_name");
+            entity.Property(e => e.Password)
+                .HasMaxLength(50)
+                .HasColumnName("password");
+            entity.Property(e => e.Permission)
+                .HasDefaultValue(false)
+                .HasColumnName("permission");
             entity.Property(e => e.Phone)
                 .HasMaxLength(11)
                 .IsUnicode(false)
                 .HasColumnName("phone");
+            entity.Property(e => e.Randomkey)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("randomkey");
+            entity.Property(e => e.Role)
+                .HasDefaultValue(0)
+                .HasColumnName("role");
+            entity.Property(e => e.Sex)
+                .HasDefaultValue(false)
+                .HasColumnName("sex");
         });
 
         modelBuilder.Entity<Favourite>(entity =>
@@ -227,7 +269,7 @@ public partial class CosmeticContext : DbContext
             entity.HasOne(d => d.IdProductNavigation).WithMany(p => p.Favourites)
                 .HasForeignKey(d => d.IdProduct)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__favourite__id_pr__4F7CD00D");
+                .HasConstraintName("FK__favourite__id_pr__1CBC4616");
         });
 
         modelBuilder.Entity<Image>(entity =>
@@ -255,45 +297,6 @@ public partial class CosmeticContext : DbContext
                 .HasMaxLength(3)
                 .IsUnicode(false)
                 .HasColumnName("type");
-        });
-
-        modelBuilder.Entity<Ingredient>(entity =>
-        {
-            entity.HasKey(e => e.IdIngredient).HasName("PK__ingredie__9D79738D0EBC909A");
-
-            entity.ToTable("ingredient");
-
-            entity.Property(e => e.IdIngredient)
-                .HasMaxLength(11)
-                .IsUnicode(false)
-                .HasColumnName("id_ingredient");
-            entity.Property(e => e.Datebegin)
-                .HasColumnType("smalldatetime")
-                .HasColumnName("datebegin");
-            entity.Property(e => e.DetailText)
-                .HasColumnType("text")
-                .HasColumnName("detail_text");
-            entity.Property(e => e.Guide)
-                .HasColumnType("text")
-                .HasColumnName("guide");
-            entity.Property(e => e.Hide).HasColumnName("hide");
-            entity.Property(e => e.Meta)
-                .HasMaxLength(50)
-                .IsUnicode(false)
-                .HasColumnName("meta");
-            entity.Property(e => e.Name)
-                .HasMaxLength(255)
-                .HasColumnName("name");
-            entity.Property(e => e.Order).HasColumnName("order");
-            entity.Property(e => e.RiskLevel)
-                .HasMaxLength(10)
-                .HasColumnName("risk_level");
-            entity.Property(e => e.SkinCompatibility)
-                .HasMaxLength(255)
-                .HasColumnName("skin_compatibility");
-            entity.Property(e => e.Uses)
-                .HasMaxLength(255)
-                .HasColumnName("uses");
         });
 
         modelBuilder.Entity<Menu>(entity =>
@@ -332,11 +335,18 @@ public partial class CosmeticContext : DbContext
                 .HasMaxLength(20)
                 .IsUnicode(false)
                 .HasColumnName("id_order");
-            entity.Property(e => e.Datebegin).HasColumnName("datebegin");
+            entity.Property(e => e.Datebegin)
+                .HasColumnType("datetime")
+                .HasColumnName("datebegin");
+            entity.Property(e => e.IdCustomer)
+                .HasMaxLength(11)
+                .IsUnicode(false)
+                .HasColumnName("id_customer");
             entity.Property(e => e.IdStaff)
                 .HasMaxLength(11)
                 .IsUnicode(false)
                 .HasColumnName("id_staff");
+            entity.Property(e => e.IdStatus).HasColumnName("id_status");
             entity.Property(e => e.ModifiedAt).HasColumnName("modified_at");
             entity.Property(e => e.Note)
                 .HasMaxLength(50)
@@ -359,6 +369,10 @@ public partial class CosmeticContext : DbContext
                 .HasColumnName("receiver_phone");
             entity.Property(e => e.Shipcost).HasColumnName("shipcost");
 
+            entity.HasOne(d => d.IdCustomerNavigation).WithMany(p => p.Orders)
+                .HasForeignKey(d => d.IdCustomer)
+                .HasConstraintName("FK_order_customer");
+
             entity.HasOne(d => d.IdStaffNavigation).WithMany(p => p.Orders)
                 .HasForeignKey(d => d.IdStaff)
                 .OnDelete(DeleteBehavior.ClientSetNull)
@@ -375,6 +389,7 @@ public partial class CosmeticContext : DbContext
                 .HasMaxLength(11)
                 .IsUnicode(false)
                 .HasColumnName("id_detail");
+            entity.Property(e => e.Discount).HasColumnName("discount");
             entity.Property(e => e.IdOrder)
                 .HasMaxLength(20)
                 .IsUnicode(false)
@@ -383,11 +398,11 @@ public partial class CosmeticContext : DbContext
                 .HasMaxLength(11)
                 .IsUnicode(false)
                 .HasColumnName("id_product");
-            entity.Property(e => e.Quantity).HasColumnName("quantity");
-            entity.Property(e => e.Status)
-                .HasMaxLength(50)
-                .IsUnicode(false)
-                .HasColumnName("status");
+            entity.Property(e => e.IdStatus).HasColumnName("id_status");
+            entity.Property(e => e.Quantity)
+                .HasDefaultValue(1)
+                .HasColumnName("quantity");
+            entity.Property(e => e.UnitPrice).HasColumnName("unit_price");
 
             entity.HasOne(d => d.IdOrderNavigation).WithMany(p => p.OrderDetails)
                 .HasForeignKey(d => d.IdOrder)
@@ -397,12 +412,17 @@ public partial class CosmeticContext : DbContext
             entity.HasOne(d => d.IdProductNavigation).WithMany(p => p.OrderDetails)
                 .HasForeignKey(d => d.IdProduct)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__order_det__id_pr__5DCAEF64");
+                .HasConstraintName("FK__order_det__id_pr__1F98B2C1");
+
+            entity.HasOne(d => d.IdStatusNavigation).WithMany(p => p.OrderDetails)
+                .HasForeignKey(d => d.IdStatus)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_order_detail_status");
         });
 
         modelBuilder.Entity<Post>(entity =>
         {
-            entity.HasKey(e => e.IdPost).HasName("PK__post__3840C79DCE29D9AA");
+            entity.HasKey(e => e.IdPost).HasName("PK__tmp_ms_x__3840C79D992406DD");
 
             entity.ToTable("post");
 
@@ -412,11 +432,10 @@ public partial class CosmeticContext : DbContext
                 .HasColumnName("id_post");
             entity.Property(e => e.Content)
                 .HasMaxLength(255)
-                .IsUnicode(false)
                 .HasColumnName("content");
             entity.Property(e => e.Datebegin).HasColumnName("datebegin");
             entity.Property(e => e.Description)
-                .HasColumnType("text")
+                .HasMaxLength(255)
                 .HasColumnName("description");
             entity.Property(e => e.Hide).HasColumnName("hide");
             entity.Property(e => e.IdProduct)
@@ -437,12 +456,12 @@ public partial class CosmeticContext : DbContext
             entity.HasOne(d => d.IdProductNavigation).WithMany(p => p.Posts)
                 .HasForeignKey(d => d.IdProduct)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__post__id_product__59FA5E80");
+                .HasConstraintName("FK__post__id_product__2A164134");
         });
 
         modelBuilder.Entity<Product>(entity =>
         {
-            entity.HasKey(e => e.IdProduct).HasName("PK__product__BA39E84FA7FBE103");
+            entity.HasKey(e => e.IdProduct).HasName("PK__tmp_ms_x__BA39E84F99F41125");
 
             entity.ToTable("product");
 
@@ -454,7 +473,7 @@ public partial class CosmeticContext : DbContext
                 .HasColumnType("smalldatetime")
                 .HasColumnName("datebegin");
             entity.Property(e => e.Description)
-                .HasColumnType("text")
+                .HasMaxLength(300)
                 .HasColumnName("description");
             entity.Property(e => e.Exp)
                 .HasMaxLength(50)
@@ -472,10 +491,6 @@ public partial class CosmeticContext : DbContext
                 .HasMaxLength(11)
                 .IsUnicode(false)
                 .HasColumnName("id_image");
-            entity.Property(e => e.IdIngredient)
-                .HasMaxLength(11)
-                .IsUnicode(false)
-                .HasColumnName("id_ingredient");
             entity.Property(e => e.Meta)
                 .HasMaxLength(50)
                 .IsUnicode(false)
@@ -494,22 +509,17 @@ public partial class CosmeticContext : DbContext
             entity.HasOne(d => d.IdBrandNavigation).WithMany(p => p.Products)
                 .HasForeignKey(d => d.IdBrand)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__product__id_bran__3F466844");
+                .HasConstraintName("FK__product__id_bran__17F790F9");
 
             entity.HasOne(d => d.IdCategoryNavigation).WithMany(p => p.Products)
                 .HasForeignKey(d => d.IdCategory)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__product__id_catr__403A8C7D");
+                .HasConstraintName("FK__product__id_cate__18EBB532");
 
             entity.HasOne(d => d.IdImageNavigation).WithMany(p => p.Products)
                 .HasForeignKey(d => d.IdImage)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__product__id_imag__4222D4EF");
-
-            entity.HasOne(d => d.IdIngredientNavigation).WithMany(p => p.Products)
-                .HasForeignKey(d => d.IdIngredient)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__product__id_ingr__412EB0B6");
+                .HasConstraintName("FK__product__id_imag__1AD3FDA4");
         });
 
         modelBuilder.Entity<Rate>(entity =>
@@ -558,7 +568,7 @@ public partial class CosmeticContext : DbContext
             entity.HasOne(d => d.IdProductNavigation).WithMany(p => p.Rates)
                 .HasForeignKey(d => d.IdProduct)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__rate__id_product__4CA06362");
+                .HasConstraintName("FK__rate__id_product__1BC821DD");
 
             entity.HasOne(d => d.ImageNavigation).WithMany(p => p.Rates)
                 .HasForeignKey(d => d.Image)
@@ -596,6 +606,23 @@ public partial class CosmeticContext : DbContext
                 .HasMaxLength(10)
                 .IsUnicode(false)
                 .HasColumnName("phone");
+        });
+
+        modelBuilder.Entity<Status>(entity =>
+        {
+            entity.HasKey(e => e.IdStatus).HasName("PK__status__5D2DC6E85562A32D");
+
+            entity.ToTable("status");
+
+            entity.Property(e => e.IdStatus)
+                .ValueGeneratedNever()
+                .HasColumnName("id_status");
+            entity.Property(e => e.Description)
+                .HasMaxLength(50)
+                .HasColumnName("description");
+            entity.Property(e => e.Name)
+                .HasMaxLength(50)
+                .HasColumnName("name");
         });
 
         OnModelCreatingPartial(modelBuilder);

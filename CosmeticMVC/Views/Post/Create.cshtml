@@ -1,0 +1,59 @@
+﻿@model CosmeticMVC.ViewModels.CreatePostVM
+
+@{
+    ViewData["Title"] = "Thêm bài viết";
+    Layout = "_LayoutCustomer";
+}
+
+<div class="card shadow-sm" style="height: 100hv">
+    <div class="card-body">
+        <form asp-action="Create" asp-controller="Post" method="post">
+            <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+            <!-- Content Section -->
+            <div class="mb-4">
+                <label asp-for="Content" class="form-label">Tiêu đề</label>
+                <input asp-for="Content" class="form-control" placeholder="Nhập nội dung bài viết..." />
+                <span asp-validation-for="Content" class="text-danger"></span>
+            </div>
+            
+            <div class="mb-4">
+                <label asp-for="IdProduct" class="form-label">Chọn sản phẩm</label>
+                <span asp-validation-for="IdProduct" class="text-danger"></span>
+                <span></span>
+                <select asp-for="IdProduct" class="form-control mt-2" asp-items="@(new SelectList(ViewBag.Products, "IdProduct", "Name"))">
+                    <option value="">Chọn sản phẩm</option>
+                </select>
+            </div>
+
+            <!-- Description Section (CKEditor) -->
+            <div class="mb-4">
+                    <label for="Description" class="col-2 col-form-label-sm text-right">Chi tiết bài viết</label>
+                    <textarea asp-for="Description" id="editor1" class="form-control"></textarea>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="d-flex justify-content-end">
+                <button type="submit" class="btn btn-primary">Tạo bài viết</button>
+                <a asp-action="Index" class="btn btn-secondary ms-3">Quay lại danh sách</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // CKEditor setup (no changes needed)
+        CKEDITOR.replace('editor1', {
+            height: 300,
+        });
+
+        // Sync CKEditor data with the form textarea before submitting
+        $('#productForm').on('submit', function () {
+            for (instance in CKEDITOR.instances) {
+                CKEDITOR.instances[instance].updateElement();
+            }
+        });
+    });
+</script>

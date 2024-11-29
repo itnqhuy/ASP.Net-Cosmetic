@@ -1,0 +1,67 @@
+﻿@model IEnumerable<CosmeticMVC.Data.Order>
+
+@{
+    ViewData["Title"] = "Order List";
+    Layout = "_LayoutAdmin"; // Ensures consistency with the admin layout
+}
+<style>
+    main .container-fluid.px-4 {
+        padding-top: 0px !important;
+    }
+    #layoutSidenav_content {
+        padding-left: 450px !important; /* Adjust layout padding */
+    }
+</style>
+
+<div class="card mb-4">
+    <div class="card-header">
+        <i class="fas fa-table me-1"></i>
+        Danh sách đơn hàng
+    </div>
+    <div class="card-body">
+        <div style="overflow-x: auto; max-width: 100%;">
+            <table id="datatablesSimple" class="table table-bordered table-hover" style="white-space: nowrap">
+                <thead>
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.IdOrder)</th>
+                        <th>@Html.DisplayNameFor(model => model.ReceiverAddress)</th>
+                        <th>@Html.DisplayNameFor(model => model.ReceiverName)</th>
+                        <th>@Html.DisplayNameFor(model => model.ReceiverPhone)</th>
+                        <th>@Html.DisplayNameFor(model => model.Paymethod)</th>
+                        <th>@Html.DisplayNameFor(model => model.ModifiedAt)</th>
+                        <th>Chức năng</th>
+                    </tr>
+                </thead>
+                <tfoot>
+                <tr>
+                    <th>@Html.DisplayNameFor(model => model.IdOrder)</th>
+                    <th>@Html.DisplayNameFor(model => model.ReceiverAddress)</th>
+                    <th>@Html.DisplayNameFor(model => model.ReceiverName)</th>
+                    <th>@Html.DisplayNameFor(model => model.ReceiverPhone)</th>
+                    <th>@Html.DisplayNameFor(model => model.Paymethod)</th>
+                    <th>@Html.DisplayNameFor(model => model.ModifiedAt)</th>
+                    <th>Chức năng</th>
+                </tr>
+                </tfoot>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <th>@Html.DisplayFor(modelItem => item.IdOrder)</th>
+                            <td>@Html.DisplayFor(modelItem => item.ReceiverAddress)</td>
+                            <td>@Html.DisplayFor(modelItem => item.ReceiverName)</td>
+                            <td>@Html.DisplayFor(modelItem => item.ReceiverPhone)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Paymethod)</td>
+                            <td>@Html.DisplayFor(modelItem => item.ModifiedAt)</td>
+                            <td>
+                                <a asp-action="Edit" asp-route-id="@item.IdOrder">Edit</a> |
+                                <a asp-action="Details" asp-route-id="@item.IdOrder">Details</a> |
+                                <a asp-action="Delete" asp-route-id="@item.IdOrder">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

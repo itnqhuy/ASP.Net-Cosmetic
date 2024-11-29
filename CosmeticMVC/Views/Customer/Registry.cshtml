@@ -1,0 +1,465 @@
+﻿@model CosmeticMVC.ViewModels.RegisterVM
+
+@{
+    Layout = "_LayoutAuthentication";
+    ViewData["Title"] = "Đăng ký";
+}
+
+<div id="registerPage">
+    <div class="left-panel">
+        <div class="info-container">
+            <a asp-controller="Home" asp-action="Index"><img src="~/HinhAnh/logo.png" alt="Logo" class="logo"></a>
+        </div>
+    </div>
+    <div class="right-panel">
+        <div class="register-container bg-light card shadow-sm">
+            <form asp-action="Registry" asp-controller="Customer" method="post" enctype="multipart/form-data" class="register-form">
+                <!-- Avatar Section -->
+                <div class="form-row avatar-row">
+                    <div class="avatar-container">
+                        <div class="avatar-preview">
+                            <img id="avatarImage" src="@Url.Content("~/HinhAnh/avtdefault.png")" alt="Ảnh đại diện" />
+                        </div>
+                        <input asp-for="Avatar" type="file" id="avatarUpload" name="Hinh" class="form-control-file" />
+                        <span asp-validation-for="Avatar" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <!-- Input Fields -->
+                <div class="form-row">
+                    <div class="input-group col-half">
+                        <input asp-for="IdCustomer" class="input-field" placeholder="@ViewData.ModelMetadata.Properties[nameof(Model.IdCustomer)].DisplayName" />
+                        <span asp-validation-for="IdCustomer" class="text-danger"></span>
+                    </div>
+
+                    <div class="input-group col-half">
+                        <input asp-for="FullName" class="input-field" placeholder="@ViewData.ModelMetadata.Properties[nameof(Model.FullName)].DisplayName" />
+                        <span asp-validation-for="FullName" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="input-group col-half">
+                        <input asp-for="Email" class="input-field" placeholder="@ViewData.ModelMetadata.Properties[nameof(Model.Email)].DisplayName" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+
+                    <div class="input-group col-half">
+                        <input asp-for="Phone" class="input-field" placeholder="@ViewData.ModelMetadata.Properties[nameof(Model.Phone)].DisplayName" />
+                        <span asp-validation-for="Phone" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="input-group col-half">
+                        <input asp-for="Password" type="password" class="input-field" placeholder="@ViewData.ModelMetadata.Properties[nameof(Model.Password)].DisplayName" />
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+
+                    <div class="input-group col-half">
+                        <input type="password" id="ConfirmPassword" placeholder="Xác nhận mật khẩu" class="input-field" required />
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="input-group">
+                        <input asp-for="Address" class="input-field" placeholder="@ViewData.ModelMetadata.Properties[nameof(Model.Address)].DisplayName" />
+                        <span asp-validation-for="Address" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="btn-register">Tạo tài khoản</button>
+            </form>
+
+
+            <hr class="divider">
+            <div class="login-text">
+                Bạn đã có tài khoản? <a asp-action="Login" asp-controller="Customer" class="login-link">Đăng nhập</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<style>
+    .avatar-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .avatar-preview {
+        width: 90px;
+        height: 90px;
+        border-radius: 50%;
+        overflow: hidden;
+        border: 2px solid #ddd;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 10px;
+        background-color: #f7f7f7;
+    }
+
+        .avatar-preview {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 2px solid #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f7f7f7;
+            margin-bottom: 10px;
+            margin-left: auto; /* Added */
+            margin-right: auto; /* Added */
+        }
+
+    .avatar-upload {
+        text-align: center;
+    }
+
+    .form-control-file {
+        margin-top: 10px;
+        font-size: 14px;
+        padding: 5px;
+        border: none;
+        background: none;
+        cursor: pointer;
+    }
+
+    /* General Styles for Body */
+    body {
+        margin: 0;
+        font-family: 'Poppins', sans-serif;
+        height: 100vh;
+        overflow: hidden;
+    }
+
+    /* Page Container */
+    #registerPage {
+        display: flex;
+        width: 750px;
+        height: 90%;
+    }
+
+    /* Left Panel (Information) */
+    .left-panel {
+        width: 33.33%;
+        background: #8BB44C; /* Màu xanh đậm hơn #8BB44C */
+        color: #fff;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-top-left-radius: 30px; /* Bo góc trên trái */
+        border-bottom-left-radius: 30px; /* Bo góc dưới trái */
+        box-shadow: 10px 0 30px rgba(0, 0, 0, 0.2); /* Đổ bóng mạnh hơn cho panel trái */
+    }
+
+    .info-container {
+        max-width: 300px;
+    }
+
+        .info-container .logo {
+            width: 120px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3); /* Đổ bóng cho logo */
+            border-radius: 10px; /* Thêm bo góc nhẹ cho logo */
+        }
+
+    .register-title {
+        font-size: 20px; /* Kích thước chữ vừa phải cho "Tạo tài khoản!" */
+        font-weight: bold;
+        margin-top: 20px;
+    }
+
+    /* Right Panel (Form) */
+    .right-panel {
+        width: 66.67%;
+        background: #F8F9FA; /* Changed to white */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-top-right-radius: 30px;
+        border-bottom-right-radius: 30px;
+        box-shadow: -10px 0 30px rgba(0, 0, 0, 0.2);
+    }
+
+
+    /* Register Container */
+    .register-container {
+        border-top-right-radius: 30px; /* Bo góc trên phải */
+        border-bottom-right-radius: 30px; /* Bo góc dưới phải */
+        padding: 30px;
+        width: 110%;
+        max-width: 900px; /* Tăng chiều rộng tối đa của form để rộng hơn */
+        text-align: center;
+        background: #ffffff;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2); /* Đổ bóng mạnh hơn cho khối đăng ký */
+    }
+
+    .user-info-title {
+        font-size: 24px; /* Kích thước chữ cho "Thông tin người dùng" */
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 10px;
+    }
+
+    /* Form Styles */
+    .register-form {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .form-row {
+        display: flex;
+        gap: 15px;
+        align-items: center;
+    }
+
+    .avatar-row {    
+        justify-content: center; /* Centers the content vertically (if necessary) */
+        text-align:center;
+    }
+
+    .input-group {
+        position: relative;
+        width: 100%;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); /* Đổ bóng mạnh hơn cho mỗi ô nhập liệu */
+    }
+
+    .col-half {
+        flex: 1;
+    }
+
+    .form-control-file {
+        margin-top: 10px; /* Tùy chỉnh khoảng cách trên nếu cần */
+    }
+
+    /* Input Field Styling */
+    .input-field !important {
+        width: 100%;
+        padding: 10px 15px;
+        border: 1px solid #ddd;
+        border-radius: 8px; /* Add rounded corners */
+        font-size: 14px;
+        box-shadow: none; /* Ensure no shadow is added */
+        outline: none;
+    }
+
+    /* Placeholder Styling */
+    .input-field::placeholder {
+        color: #aaa; /* Lighter color for placeholder */
+        font-style: italic;
+    }
+
+    /* Focus State */
+    .input-field:focus {
+        border-color: #8BB44C; /* Green color on focus */
+        box-shadow: 0 0 5px rgba(139, 180, 76, 0.5); /* Subtle focus shadow */
+    }
+
+    /* Validation Message */
+    .text-danger {
+        color: #FF6F61; /* Softer red color */
+        font-size: 13px;
+        margin-top: 5px;
+        margin-left: 5px; /* Slight indentation for alignment */
+        display: block; /* Ensure it takes up the entire row */
+    }
+
+
+    .radio-label {
+        font-size: 14px;
+        color: #333;
+        display: flex;
+        align-items: center;
+    }
+
+    .input-radio {
+        margin-right: 5px;
+    }
+
+    .btn-select-image {
+        background: #8BB44C; /* Màu của nút chọn ảnh */
+        color: #fff;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 5px;
+        font-size: 14px;
+        cursor: pointer;
+        transition: background 0.3s ease;
+        margin-top: 10px;
+    }
+
+        .btn-select-image:hover {
+            background: #76993e; /* Tông màu đậm hơn khi hover */
+        }
+
+
+    /* Avatar Input */
+    .avatar-input {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); /* Đổ bóng cho ô nhập hình ảnh */
+        padding: 10px;
+        border-radius: 5px;
+        background: #ffffff;
+    }
+
+    .avatar-label {
+        margin-bottom: 5px;
+        font-weight: 600;
+        font-size: 14px;
+    }
+
+    /* Button Styles */
+    .btn-register {
+        background: #8BB44C; /* Màu nút là #8BB44C */
+        color: #fff;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background 0.3s ease, box-shadow 0.3s ease;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2); /* Đổ bóng mạnh hơn cho nút đăng ký */
+    }
+
+        .btn-register:hover {
+            background: #76993e; /* Tông màu đậm hơn khi hover */
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25); /* Tăng đổ bóng khi hover */
+        }
+
+    /* Divider and Login Link */
+    .divider {
+        margin: 5px 0;
+        border: none;
+        border-top: 1px solid #ddd;
+    }
+
+    .login-text {
+        font-size: 14px;
+        color: #666;
+    }
+
+    .login-link {
+        color: #8BB44C; /* Đổi màu của link sang #8BB44C */
+        text-decoration: none;
+    }
+
+        .login-link:hover {
+            text-decoration: underline;
+        }
+
+    /* Validation Styles */
+    .text-danger {
+        color: #ff0000;
+        font-size: 12px;
+        text-align: left;
+    }
+
+    .input-group {
+        display: flex;
+        flex-direction: column; /* Align label and content vertically */
+        gap: 5px; /* Space between "Giới tính:" and the radio buttons */
+        align-items: flex-start;
+    }
+
+    .gender-options {
+        display: flex;
+        flex-direction: row; /* Keep radio buttons in a row */
+        gap: 20px; /* Space between "Nam" and "Nữ" options */
+    }
+
+    .radio-label {
+        display: flex;
+        align-items: center;
+        font-size: 14px;
+        color: #333;
+    }
+
+    .input-radio {
+        margin-right: 5px; /* Space between radio button and label */
+    }
+
+
+    .form-control {
+        width: calc(100% - 100px);
+        padding: 8px;
+        margin-right: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+
+    /* Avatar Input */
+    .avatar-input {
+        display: flex;
+        align-items: center; /* Căn giữa các thành phần theo chiều dọc */
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); /* Đổ bóng cho ô nhập hình ảnh */
+        padding: 10px;
+        border-radius: 5px;
+        background: #ffffff;
+        margin-bottom: 15px; /* Tạo khoảng cách dưới */
+    }
+
+    .avatar-label {
+        font-weight: 600;
+        font-size: 14px;
+        margin-right: 10px; /* Tạo khoảng cách giữa nhãn và input */
+    }
+
+    .form-control-file {
+        padding: 5px;
+        font-size: 14px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Kiểm tra mật khẩu và xác nhận mật khẩu
+        const form = document.querySelector('.register-form');
+        form.addEventListener('submit', function (e) {
+            const password = document.getElementById('Password').value;
+            const confirmPassword = document.getElementById('ConfirmPassword').value;
+            if (password !== confirmPassword) {
+                e.preventDefault();
+                alert("Mật khẩu và xác nhận mật khẩu không khớp.");
+            }
+        });
+
+        // Xử lý thay đổi avatar
+        const avatarInput = document.getElementById('avatarUpload');
+        const avatarImage = document.getElementById('avatarImage');
+
+        avatarInput.addEventListener('change', function () {
+            const file = this.files[0];
+            if (file) {
+                const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+                if (allowedTypes.includes(file.type)) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        avatarImage.src = e.target.result; // Set the image source to the uploaded file
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    alert('Vui lòng chọn một tệp ảnh hợp lệ (JPG, PNG, GIF).');
+                    this.value = ''; // Reset the file input
+                }
+            }
+        });
+    });
+</script>
+
+
+

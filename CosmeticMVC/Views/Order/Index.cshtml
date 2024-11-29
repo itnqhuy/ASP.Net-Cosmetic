@@ -1,0 +1,53 @@
+﻿@model IEnumerable<CosmeticMVC.ViewModels.ListOrderVM>
+
+@{
+    ViewData["Title"] = "Danh sách đơn hàng";
+    Layout = "_LayoutCustomer";
+}
+
+<!-- Breadcrumb Section Begin -->
+<section class="breadcrumb-section set-bg" data-setbg="@Url.Content("HinhAnh/breadcrumb.png")">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="breadcrumb__text">
+                    <h2>Cosmetic Shop</h2>
+                    <div class="breadcrumb__option">
+                        <a asp-controller="Home" asp-action="Index">Trang Chủ </a>
+                        <span>Lịch sử đơn hàng</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Breadcrumb Section End -->
+
+<h2>Danh sách đơn hàng của bạn</h2>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Mã đơn hàng</th>
+            <th>Tên người nhận</th>
+            <th>Ngày tạo</th>
+            <th>Phương thức thanh toán</th>
+            <th>Phí vận chuyển</th>
+            <th>Tình trạng</th>
+            <th>Tổng tiền</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var order in Model)
+        {
+            <tr>
+                <td>@order.IdOrder</td>
+                <td>@order.ReceiverName</td>
+                <td>@order.ModifiedAt.ToString("dd/MM/yyyy")</td>
+                <td>@order.Paymethod</td>
+                <td>@order.Shipcost</td>
+                <td>@order.IdStatus</td>
+                <td>@order.TotalAmount</td>
+            </tr>
+        }
+    </tbody>
+</table>

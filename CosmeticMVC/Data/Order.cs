@@ -21,9 +21,15 @@ public partial class Order
 
     public string Note { get; set; } = null!;
 
-    public DateOnly Datebegin { get; set; }
+    public DateTime Datebegin { get; set; }
 
     public string IdStaff { get; set; } = null!;
+
+    public string? IdCustomer { get; set; }
+
+    public int? IdStatus { get; set; }
+
+    public virtual Customer? IdCustomerNavigation { get; set; }
 
     public virtual Staff IdStaffNavigation { get; set; } = null!;
 
