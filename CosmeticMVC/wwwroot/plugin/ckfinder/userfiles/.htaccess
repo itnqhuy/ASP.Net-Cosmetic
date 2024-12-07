@@ -1,0 +1,4 @@
+<Directory "C:/Users/User/source/repos/Ecommerce/CosmeticMVC/wwwroot/plugin">
+	AllowOverride All
+	Require all granted
+</Directory>

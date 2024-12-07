@@ -1,53 +1,119 @@
 ﻿@model IEnumerable<CosmeticMVC.Data.Brand>
 
 @{
-    ViewData["Title"] = "Brands";
+    ViewData["Title"] = "Danh sách thương hiệu";
     Layout = "_LayoutAdmin";
 }
+
 <style>
-    main .container-fluid.px-4 {
-        padding-top: 0px !important;
-    }
     #layoutSidenav_content {
         padding-left: 400px !important; /* Adjust layout padding */
     }
+
+    main .container-fluid.px-4 {
+        padding-top: 100px !important;
+    }
+
+    .card {
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-header {
+        background-color: #007bff;
+        color: #fff;
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    .table-responsive {
+        overflow-x: auto;
+    }
+
+    .btn-action {
+        display: inline-flex;
+        gap: 10px;
+    }
+
+    .btn-primary, .btn-secondary {
+        padding: 8px 15px;
+        font-size: 14px;
+        border-radius: 5px;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+    }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        border-color: #6c757d;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+        border-color: #0056b3;
+    }
+
+    .btn-secondary:hover {
+        background-color: #5a6268;
+        border-color: #545b62;
+    }
+
+    img.thumbnail {
+        max-width: 100px;
+        height: auto;
+        border-radius: 5px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    }
 </style>
 
-<div class="card mb-4">
-    <div class="card-header">
-        <i class="fas fa-table me-1"></i>
-        Danh sách thương hiệu
+<div class="card mb-4 shadow-sm">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h4 class="mb-0">
+            <i class="fas fa-table me-2"></i> Danh sách thương hiệu
+        </h4>
+        <a href="@Url.Action("Create", "Brands")" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Thêm thương hiệu
+        </a>
     </div>
     <div class="card-body">
-        <div style="overflow-x: auto; max-width: 100%;">
-            <table id="datatablesSimple" class="table table-bordered table-hover" style="white-space: nowrap;">
-                <thead>
+        <div class="table-responsive">
+            <table id="datatablesSimple" class="table table-bordered table-striped align-middle">
+                <thead class="table-dark">
                     <tr>
                         <th>@Html.DisplayNameFor(model => model.Datebegin)</th>
                         <th>@Html.DisplayNameFor(model => model.Name)</th>
-                        <th>@Html.DisplayNameFor(model => model.Thumbnail)</th>
+                        <th>Hình ảnh</th>
                         <th>Chức năng</th>
                     </tr>
                 </thead>
-                <tfoot>
-                    <tr>
-                        <th>@Html.DisplayNameFor(model => model.Datebegin)</th>
-                        <th>@Html.DisplayNameFor(model => model.Name)</th>
-                        <th>@Html.DisplayNameFor(model => model.Thumbnail)</th>
-                        <th>Chức năng</th>
-                    </tr>
-                </tfoot>
                 <tbody>
                     @foreach (var item in Model)
                     {
                         <tr>
                             <td>@Html.DisplayFor(modelItem => item.Datebegin)</td>
                             <td>@Html.DisplayFor(modelItem => item.Name)</td>
-                            <td>@Html.DisplayFor(modelItem => item.Thumbnail)</td>
                             <td>
-                                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                                @if (!string.IsNullOrEmpty(item.Image))
+                                {
+                                    <img src="@Url.Content("~/HinhAnh/Product/" + item.ImageNavigation.Name)" alt="@item.Name" class="thumbnail" />
+                                }
+                                else
+                                {
+                                    <span class="text-muted">Không có hình</span>
+                                }
+                            </td>
+                            <td>
+                                <div class="btn-action">
+                                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm">
+                                        <i class="fas fa-edit"></i> Sửa
+                                    </a>
+                                    <a href="javascript:void(0);" class="btn btn-danger btn-sm" onclick="deleteBrand('@item.Id')">
+                                        <i class="fas fa-trash"></i> Xóa
+                                    </a>
+                                </div>
                             </td>
                         </tr>
                     }
@@ -56,3 +122,11 @@
         </div>
     </div>
 </div>
+
+<script>
+    function deleteBrand(brandId) {
+        if (confirm("Bạn có chắc chắn muốn xóa thương hiệu này?")) {
+            window.location.href = `/Admin/Brands/Delete/${brandId}`;
+        }
+    }
+</script>

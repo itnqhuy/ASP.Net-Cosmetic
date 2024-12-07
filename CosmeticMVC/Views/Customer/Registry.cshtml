@@ -18,7 +18,8 @@
                 <div class="form-row avatar-row">
                     <div class="avatar-container">
                         <div class="avatar-preview">
-                            <img id="avatarImage" src="@Url.Content("~/HinhAnh/avtdefault.png")" alt="Ảnh đại diện" />
+                            <img id="avatarImage" src="@Url.Content("~/HinhAnh/avtdefault.png")" alt="Ảnh đại diện" style
+                                 ="width: 90%"/>
                         </div>
                         <input asp-for="Avatar" type="file" id="avatarUpload" name="Hinh" class="form-control-file" />
                         <span asp-validation-for="Avatar" class="text-danger"></span>

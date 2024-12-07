@@ -1,50 +1,155 @@
 ﻿@model CosmeticMVC.Data.Brand
 
 @{
-    Layout = null;
+    ViewData["Title"] = "Chỉnh sửa thương hiệu";
+    Layout = "_LayoutAdmin";
 }
 
-<!DOCTYPE html>
+<style>
+    /* Bố cục */
+    #layoutSidenav_content {
+        padding-left: 450px !important;
+    }
 
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Edit</title>
-</head>
-<body>
+    main .container-fluid.px-4 {
+        padding-top: 100px !important;
+    }
 
-<h4>Brand</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    .card {
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-header {
+        background-color: #007bff;
+        color: #fff;
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    .form-group label {
+        font-weight: bold;
+        margin-bottom: 8px;
+        display: inline-block;
+    }
+
+    .form-group input, .form-group textarea {
+        height: 45px;
+        border-radius: 8px;
+        padding: 10px;
+        font-size: 16px;
+        box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.1);
+        border: 1px solid #ced4da;
+    }
+
+        .form-group input:focus {
+            border-color: #007bff;
+            box-shadow: 0px 0px 5px rgba(0, 123, 255, 0.5);
+        }
+
+    img.preview-img {
+        max-width: 200px;
+        height: auto;
+        border-radius: 5px;
+        margin-top: 10px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+        padding: 12px 20px;
+        font-size: 16px;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+    }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+
+    .btn-secondary {
+        padding: 12px 20px;
+        font-size: 16px;
+        border-radius: 8px;
+    }
+
+    .text-danger {
+        font-size: 14px;
+    }
+</style>
+
+<h1 class="mt-4">Chỉnh sửa thương hiệu</h1>
+<ol class="breadcrumb mb-4">
+    <li class="breadcrumb-item"><a asp-action="Index">Thương hiệu</a></li>
+    <li class="breadcrumb-item active">Chỉnh sửa</li>
+</ol>
+
+<div class="card mb-4">
+    <div class="card-header">
+        <i class="fas fa-edit me-1"></i>
+        Chỉnh sửa thương hiệu
+    </div>
+    <div class="card-body">
+        <form asp-action="Edit" method="post" enctype="multipart/form-data">
             <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="Datebegin" class="control-label"></label>
-                <input asp-for="Datebegin" class="form-control" />
-                <span asp-validation-for="Datebegin" class="text-danger"></span>
+
+            <div class="row">
+                <!-- Cột Hình Ảnh -->
+                <div class="col-md-6 text-center">
+                    <div class="form-group mb-4">
+                        <label asp-for="Thumbnail">Ảnh thương hiệu</label>
+                        <input asp-for="Thumbnail" type="file" class="form-control-file" id="brandThumbnail" onchange="previewThumbnail(event)" />
+                        <span asp-validation-for="Thumbnail" class="text-danger"></span>
+                        <img id="thumbnailPreview" class="preview-img mt-3" src="@Url.Content("~/Images/Brands/" + Model.Thumbnail)" alt="Preview Image" />
+                    </div>
+                </div>
+
+                <!-- Cột Thông Tin -->
+                <div class="col-md-6">
+                    <!-- Ngày bắt đầu -->
+                    <div class="form-group mb-4">
+                        <label asp-for="Datebegin">Ngày bắt đầu <span class="text-danger">*</span></label>
+                        <input asp-for="Datebegin" type="date" class="form-control" />
+                        <span asp-validation-for="Datebegin" class="text-danger"></span>
+                    </div>
+
+                    <!-- Tên thương hiệu -->
+                    <div class="form-group mb-4">
+                        <label asp-for="Name">Tên thương hiệu <span class="text-danger">*</span></label>
+                        <input asp-for="Name" class="form-control" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Thumbnail" class="control-label"></label>
-                <input asp-for="Thumbnail" class="form-control" />
-                <span asp-validation-for="Thumbnail" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+
+            <!-- Phần Submit -->
+            <div class="row mt-4">
+                <div class="col-lg-12 text-end">
+                    <button type="submit" class="btn btn-primary me-2"><i class="fas fa-save"></i> Lưu</button>
+                    <a asp-action="Index" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Trở lại</a>
+                </div>
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+<script>
+    function previewThumbnail(event) {
+        const input = event.target;
+        const preview = document.getElementById('thumbnailPreview');
 
-</body>
-</html>
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+
+            reader.onload = function (e) {
+                preview.src = e.target.result;
+            };
+
+            reader.readAsDataURL(input.files[0]); // Đọc file và hiển thị preview
+        } else {
+            preview.src = ''; // Xóa preview nếu không có file
+        }
+    }
+</script>

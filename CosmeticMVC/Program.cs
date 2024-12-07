@@ -3,6 +3,7 @@ using CosmeticMVC.Helpers;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
+using Microsoft.Extensions.Logging;
 using System.IO;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -46,6 +47,7 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -56,7 +58,15 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseStaticFiles();  // Serve static files from wwwroot
+app.UseStaticFiles();  // Serve static files from wwwroot]
+
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "plugin")),
+    RequestPath = "/plugi"
+});
+
+
 
 app.UseRouting();
 app.UseSession();

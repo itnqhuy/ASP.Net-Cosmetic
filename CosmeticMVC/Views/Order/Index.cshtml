@@ -13,7 +13,7 @@
                 <div class="breadcrumb__text">
                     <h2>Cosmetic Shop</h2>
                     <div class="breadcrumb__option">
-                        <a asp-controller="Home" asp-action="Index">Trang Chủ </a>
+                        <a asp-controller="Home" asp-action="Index">Đơn hàng</a>
                         <span>Lịch sử đơn hàng</span>
                     </div>
                 </div>
@@ -22,32 +22,90 @@
     </div>
 </section>
 <!-- Breadcrumb Section End -->
+<!-- Main Content -->
+<div class="container my-5">
+    <h2 class="text-center mb-4">Danh sách đơn hàng của bạn</h2>
 
-<h2>Danh sách đơn hàng của bạn</h2>
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th>Mã đơn hàng</th>
-            <th>Tên người nhận</th>
-            <th>Ngày tạo</th>
-            <th>Phương thức thanh toán</th>
-            <th>Phí vận chuyển</th>
-            <th>Tình trạng</th>
-            <th>Tổng tiền</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var order in Model)
-        {
-            <tr>
-                <td>@order.IdOrder</td>
-                <td>@order.ReceiverName</td>
-                <td>@order.ModifiedAt.ToString("dd/MM/yyyy")</td>
-                <td>@order.Paymethod</td>
-                <td>@order.Shipcost</td>
-                <td>@order.IdStatus</td>
-                <td>@order.TotalAmount</td>
-            </tr>
-        }
-    </tbody>
-</table>
+    <!-- Table Section -->
+    <div class="table-responsive">
+        <table class="table table-striped table-hover">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Mã đơn hàng</th>
+                    <th>Tên người nhận</th>
+                    <th>Ngày tạo</th>
+                    <th>Phương thức thanh toán</th>
+                    <th>Phí vận chuyển</th>
+                    <th>Tình trạng</th>
+                    <th>Tổng tiền</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var order in Model)
+                {
+                    <tr>
+                        <td>@order.IdOrder</td>
+                        <td>@order.ReceiverName</td>
+                        <td>@order.ModifiedAt.ToString("dd/MM/yyyy")</td>
+                        <td>@order.Paymethod</td>
+                        <td>@order.Shipcost</td>
+                        <td>@order.IdStatus</td>
+                        <td>@order.TotalAmount</td>
+                    </tr>
+                }
+                <tr>
+                    <td>OD0001</td>
+                    <td>Quốc Huy</td>
+                    <td>03:51 12/7/2024</td>
+                    <td>COD</td>
+                    <td>30000 VNĐ</td>
+                    <td>Đã đặt hàng</td>
+                    <td>630000 VNĐ</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Add additional custom styles -->
+<style>
+    /* Styling the breadcrumb section */
+    .breadcrumb-section {
+        background-size: cover;
+        background-position: center center;
+        padding: 80px 0;
+    }
+    .breadcrumb__text h2 {
+        font-size: 36px;
+        font-weight: 700;
+        color: #fff;
+    }
+    .breadcrumb__option a {
+        color: #fff;
+        text-decoration: none;
+        font-weight: 600;
+    }
+    .breadcrumb__option span {
+        color: #f8f9fa;
+    }
+
+    /* Customizing the table */
+    table th, table td {
+        text-align: center;
+        vertical-align: middle;
+    }
+
+    table th {
+        background-color: #7FAD39;
+        color: white;
+    }
+
+    table tbody tr:hover {
+        background-color: #f1f1f1;
+    }
+
+    /* Custom styling for the footer */
+    footer {
+        background-color: #7FAD39;
+    }
+</style>
