@@ -1,91 +1,314 @@
-﻿@model CosmeticMVC.Data.Product
+﻿@model CosmeticMVC.Areas.Admin.ViewModels.ProductEditViewModel
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Chỉnh sửa sản phẩm";
+    Layout = "_LayoutAdmin";
 }
 
-<h1>Edit</h1>
+<style>
+    /* Bố cục và padding */
+    #layoutSidenav_content {
+        padding-left: 450px !important;
+    }
 
-<h4>Product</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="IdProduct" />
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
+    main .container-fluid.px-4 {
+        padding-top: 300px !important;
+    }
+
+    .form-group label {
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    .form-group input, .form-group select, .form-group textarea {
+        height: 45px;
+        border-radius: 10px;
+        padding: 12px;
+        font-size: 16px;
+        box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-group textarea {
+        height: 150px;
+        resize: vertical;
+    }
+
+    .card-header {
+        background-color: #007bff;
+        color: #fff;
+    }
+
+    .card-body {
+        background-color: #f8f9fa;
+        border-radius: 10px;
+        padding: 20px;
+    }
+
+    .breadcrumb {
+        background-color: transparent;
+        padding: 0;
+    }
+
+    .breadcrumb-item a {
+        color: #007bff;
+    }
+
+    .breadcrumb-item.active {
+        color: #6c757d;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+        padding: 12px 20px;
+        font-size: 16px;
+        border-radius: 8px;
+    }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        border-color: #6c757d;
+        padding: 12px 20px;
+        font-size: 16px;
+        border-radius: 8px;
+    }
+
+        .btn-primary:hover, .btn-secondary:hover {
+            opacity: 0.85;
+        }
+
+    .form-row {
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center; /* Canh giữa theo chiều dọc */
+    }
+
+        .form-row .col-md-6 {
+            padding: 10px;
+        }
+
+    /* Hiệu ứng hover cho các trường */
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+        border-color: #007bff;
+        box-shadow: 0px 0px 8px rgba(0, 123, 255, 0.3);
+    }
+
+    /* Thêm khoảng cách cho button và các thành phần form */
+    .row.mt-4 {
+        margin-top: 30px;
+    }
+
+    /* Mô tả chiếm một dòng riêng biệt */
+    .form-group.description {
+        width: 100%;
+    }
+
+    .form-row.image-container {
+        justify-content: space-between; /* Căn đều hai phần (Preview và Browse) */
+        align-items: center; /* Căn giữa theo chiều dọc */
+    }
+
+    .form-group input[type="file"] {
+        margin-top: 10px;
+    }
+
+    .preview-img {
+        max-height: 300px; /* Chiều cao tối đa của hình ảnh */
+        max-width: 300px; /* Chiều rộng tối đa của hình ảnh */
+        border-radius: 3px; /* Bo góc cho hình ảnh */
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Hiệu ứng đổ bóng */
+        object-fit: cover; /* Giữ tỉ lệ hình ảnh */
+    }
+
+</style>
+
+
+<h1 class="mt-4">Chỉnh sửa sản phẩm</h1>
+<ol class="breadcrumb mb-4">
+    <li class="breadcrumb-item"><a asp-controller="Products" asp-action="Index" asp-area="Admin">Sản phẩm</a></li>
+    <li class="breadcrumb-item active">Chỉnh sửa sản phẩm</li>
+</ol>
+
+<div id="notification" style="display: none; padding: 10px; border-radius: 5px; margin-top: 10px; background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb;"></div>
+
+<div class="card mb-4">
+    <div class="card-header">
+        <i class="fas fa-edit me-1"></i>
+        Chỉnh sửa sản phẩm
+    </div>
+    <div class="card-body">
+        <form asp-action="Edit" method="post" enctype="multipart/form-data">
+            <div class="row form-row">
+                <!-- ID Sản phẩm và Tên -->
+                <div class="col-md-6">
+                    <div class="form-group mb-3">
+                        <label asp-for="IdProduct">ID Sản phẩm</label>
+                        <input asp-for="IdProduct" class="form-control" readonly />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group mb-3">
+                        <label asp-for="Name">Tên sản phẩm <span class="text-danger">*</span></label>
+                        <input asp-for="Name" class="form-control" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row form-row">
+                <!-- Giá và Số lượng -->
+                <div class="col-md-6">
+                    <div class="form-group mb-3">
+                        <label asp-for="Price">Giá <span class="text-danger">*</span></label>
+                        <input asp-for="Price" class="form-control" type="number" step="0.01" min="0" />
+                        <span asp-validation-for="Price" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group mb-3">
+                        <label asp-for="Quantity">Số lượng <span class="text-danger">*</span></label>
+                        <input asp-for="Quantity" class="form-control" type="number" min="0" />
+                        <span asp-validation-for="Quantity" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row form-row">
+                <!-- Thương hiệu và Danh mục -->
+                <div class="col-md-6">
+                    <div class="form-group mb-3">
+                        <label asp-for="IdBrand">Thương hiệu</label>
+                        <select asp-for="IdBrand" class="form-control" asp-items="ViewBag.IdBrand"></select>
+                        <span asp-validation-for="IdBrand" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group mb-3">
+                        <label asp-for="IdCategory">Danh mục</label>
+                        <select asp-for="IdCategory" class="form-control" asp-items="ViewBag.IdCategory"></select>
+                        <span asp-validation-for="IdCategory" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row form-row">
+                <!-- Nhãn -->
+                <label for="productUpload" class="form-label" style="flex: 0 0 100px; font-weight: bold;">Chọn ảnh</label>
+                <img id="imagePreview" class="preview-img" src="@Url.Content("~/HinhAnh/Product/" + Model.IdImage)" alt="Preview" />
+                <input asp-for="IdImage" type="file" id="productUpload" name="Product" class="form-control-file" style="flex: 1;" onchange="previewImage(event)" />
+            </div>
+
+            <!-- Mô tả (dòng riêng) -->
+            <div class="form-group mb-4">
+                <label asp-for="Description">Mô tả <span class="text-danger">*</span></label>
+                <textarea asp-for="Description" class="form-control" id="editor"></textarea>
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Price" class="control-label"></label>
-                <input asp-for="Price" class="form-control" />
-                <span asp-validation-for="Price" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Quantity" class="control-label"></label>
-                <input asp-for="Quantity" class="form-control" />
-                <span asp-validation-for="Quantity" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="TotalSold" class="control-label"></label>
-                <input asp-for="TotalSold" class="form-control" />
-                <span asp-validation-for="TotalSold" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Hide" /> @Html.DisplayNameFor(model => model.Hide)
-                </label>
-            </div>
-            <div class="form-group">
-                <label asp-for="Meta" class="control-label"></label>
-                <input asp-for="Meta" class="form-control" />
-                <span asp-validation-for="Meta" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Order" class="control-label"></label>
-                <input asp-for="Order" class="form-control" />
-                <span asp-validation-for="Order" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Datebegin" class="control-label"></label>
-                <input asp-for="Datebegin" class="form-control" />
-                <span asp-validation-for="Datebegin" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Exp" class="control-label"></label>
-                <input asp-for="Exp" class="form-control" />
-                <span asp-validation-for="Exp" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="IdBrand" class="control-label"></label>
-                <select asp-for="IdBrand" class="form-control" asp-items="ViewBag.IdBrand"></select>
-                <span asp-validation-for="IdBrand" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="IdCategory" class="control-label"></label>
-                <select asp-for="IdCategory" class="form-control" asp-items="ViewBag.IdCatrgory"></select>
-                <span asp-validation-for="IdCategory" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="IdImage" class="control-label"></label>
-                <select asp-for="IdImage" class="form-control" asp-items="ViewBag.IdImage"></select>
-                <span asp-validation-for="IdImage" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+
+            <!-- Phần Submit -->
+            <div class="row mt-4">
+                <div class="col-lg-12 text-end">
+                    <button type="submit" class="btn btn-primary me-2">Lưu thay đổi</button>
+                    <a asp-action="Index" class="btn btn-secondary">Trở lại danh sách</a>
+                </div>
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+            // Tích hợp CKEditor
+            CKEDITOR.replace('editor', {
+                height: 300,
+            });
+        });
+
+            function previewImage(event) {
+                const input = event.target;
+                const preview = document.getElementById('imagePreview');
+
+                if (input.files && input.files[0]) {
+                    const reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        preview.src = e.target.result;
+                    };
+
+                    reader.readAsDataURL(input.files[0]); // Đọc file dưới dạng URL
+                }
+            }
+</script>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // Hàm hiển thị thông báo
+        function showNotification(message, isError = false) {
+            var notification = $('#notification');
+            notification.text(message);
+            notification.removeClass('error');
+
+            if (isError) {
+                notification.addClass('error');
+            }
+
+            notification.fadeIn(400).delay(2000).fadeOut(400); // Hiển thị trong 2 giây rồi mờ dần
+        }
+
+        // Kiểm tra form trước khi submit
+        $('form').on('submit', function (e) {
+            let isValid = true;
+
+            // Kiểm tra tên sản phẩm
+            const name = $('#Name').val();
+            if (!name || name.trim() === '') {
+                showNotification("Tên sản phẩm không được để trống!", true);
+                isValid = false;
+            }
+
+            // Kiểm tra giá sản phẩm
+            const price = parseFloat($('#Price').val());
+            if (isNaN(price) || price <= 0) {
+                showNotification("Giá sản phẩm phải lớn hơn 0!", true);
+                isValid = false;
+            }
+
+            // Kiểm tra số lượng
+            const quantity = parseInt($('#Quantity').val());
+            if (isNaN(quantity) || quantity <= 0) {
+                showNotification("Số lượng phải là số lớn hơn 0!", true);
+                isValid = false;
+            }
+
+            // Kiểm tra thương hiệu
+            const brand = $('#IdBrand').val();
+            if (!brand || brand === '') {
+                showNotification("Vui lòng chọn thương hiệu!", true);
+                isValid = false;
+            }
+
+            // Kiểm tra danh mục
+            const category = $('#IdCategory').val();
+            if (!category || category === '') {
+                showNotification("Vui lòng chọn danh mục!", true);
+                isValid = false;
+            }
+
+            // Kiểm tra hình ảnh
+            const image = $('#productUpload').val();
+            if (!image || image === '') {
+                showNotification("Vui lòng chọn hình ảnh sản phẩm!", true);
+                isValid = false;
+            }
+
+            // Nếu form không hợp lệ, ngăn việc gửi đi
+            if (!isValid) {
+                e.preventDefault();
+            }
+        });
+    });
+</script>
+
+
 

@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CosmeticMVC.Data;
 using Microsoft.AspNetCore.Authorization;
+using CosmeticMVC.Helpers;
+using CosmeticMVC.ViewModels;
 
 namespace CosmeticMVC.Areas.Admin.Controllers
 {
@@ -22,10 +24,23 @@ namespace CosmeticMVC.Areas.Admin.Controllers
         }
 
         // GET: Admin/Orders
-        public async Task<IActionResult> Index()
+        [HttpGet]
+        public IActionResult Index()
         {
-            var cosmeticContext = _context.Orders.Include(o => o.IdStaffNavigation);
-            return View(await cosmeticContext.ToListAsync());
+            var orders = _context.Orders
+                .Select(o => new ListOrderVM
+                {
+                    IdOrder = o.IdOrder,
+                    ReceiverName = o.ReceiverName,
+                    ModifiedAt = o.ModifiedAt,
+                    Paymethod = o.Paymethod,
+                    Shipcost = o.Shipcost,
+                    IdStatus = 1,
+                    TotalAmount = (decimal)o.OrderDetails.Sum(ct => ct.Quantity * ct.UnitPrice)
+                })
+                .ToList();
+
+            return View(orders);
         }
 
         // GET: Admin/Orders/Details/5

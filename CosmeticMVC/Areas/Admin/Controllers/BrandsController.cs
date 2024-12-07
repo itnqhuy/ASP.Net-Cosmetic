@@ -24,8 +24,13 @@ namespace CosmeticMVC.Areas.Admin.Controllers
         // GET: Admin/Brands
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Brands.ToListAsync());
+            var brands = await _context.Brands
+                .Include(b => b.ImageNavigation)
+                .ToListAsync();
+
+            return View(brands);
         }
+
 
         // GET: Admin/Brands/Details/5
         public async Task<IActionResult> Details(string id)

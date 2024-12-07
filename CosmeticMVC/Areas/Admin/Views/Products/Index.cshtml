@@ -1,43 +1,42 @@
 ﻿@model IEnumerable<CosmeticMVC.Data.Product>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Tổng quan";
     Layout = "_LayoutAdmin";
 }
 <style>
+
     #layoutSidenav_content {
         padding-left: 400px !important; /* Set padding-left to 0 for layoutSidenav_content */
     }
 
     main .container-fluid.px-4 {
-        padding-top: 0px !important;
+        padding-top: 100px !important;
     }
 
-    table th {
-        white-space: nowrap; /* Prevent column headers from wrapping */
+    .table-responsive {
+        overflow-x: auto;
+    }
+
+    .btn-action {
+        display: inline-flex;
+        gap: 10px;
     }
 </style>
 
-<div class="card mb-4">
-    <div class="card-header">
-        <i class="fas fa-table me-1"></i>
-        Danh sách sản phẩm
+<div class="card mb-4 shadow-sm">
+    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+        <h4 class="mb-0">
+            <i class="fas fa-table me-2"></i> Danh sách sản phẩm
+        </h4>
+        <a href="@Url.Action("Create", "Products")" class="btn btn-success">
+            <i class="fas fa-plus"></i> Thêm sản phẩm
+        </a>
     </div>
     <div class="card-body">
-        <div style="overflow-x: auto; max-width: 100%;">
-            <table id="datatablesSimple" class="table table-bordered table-hover">
-                <thead>
-                <tr>
-                    <th>@Html.DisplayNameFor(model => model.Name)</th>
-                    <th>@Html.DisplayNameFor(model => model.Price)</th>
-                    <th>@Html.DisplayNameFor(model => model.Quantity)</th>
-                    <th>@Html.DisplayNameFor(model => model.TotalSold)</th>
-                    <th>@Html.DisplayNameFor(model => model.Hide)</th>
-                    <th>@Html.DisplayNameFor(model => model.Datebegin)</th>
-                   <th>Chức năng</th>
-                </tr>
-                </thead>
-                <tfoot>
+        <div class="table-responsive">
+            <table id="datatablesSimple" class="table table-bordered table-striped align-middle">
+                <thead class="table-dark">
                 <tr>
                     <th>@Html.DisplayNameFor(model => model.Name)</th>
                     <th>@Html.DisplayNameFor(model => model.Price)</th>
@@ -47,26 +46,134 @@
                     <th>@Html.DisplayNameFor(model => model.Datebegin)</th>
                     <th>Chức năng</th>
                 </tr>
-                </tfoot>
+                </thead>
                 <tbody>
-                    @foreach (var item in Model)
-                    {
-                        <tr>
-                            <td>@Html.DisplayFor(modelItem => item.Name)</td>
-                            <td>@Html.DisplayFor(modelItem => item.Price)</td>
-                            <td>@Html.DisplayFor(modelItem => item.Quantity)</td>
-                            <td>@Html.DisplayFor(modelItem => item.TotalSold)</td>
-                            <td>@Html.DisplayFor(modelItem => item.Hide)</td>
-                            <td>@Html.DisplayFor(modelItem => item.Datebegin)</td>
-                            <td>
-                                <a asp-action="Edit" asp-route-id="@item.IdProduct">Edit</a> |
-                                <a asp-action="Details" asp-route-id="@item.IdProduct">Details</a> |
-                                <a asp-action="Delete" asp-route-id="@item.IdProduct">Delete</a>
-                            </td>
-                        </tr>
-                    }
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(modelItem => item.Name)</td>
+                        <td>@String.Format("{0:C}", item.Price)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Quantity)</td>
+                        <td>@Html.DisplayFor(modelItem => item.TotalSold)</td>
+                        <td>@(item.Hide ? "Ẩn" : "Hiển thị")</td>
+                        <td>@Html.DisplayFor(modelItem => item.Datebegin)</td>
+                        <td>
+                            <div class="btn-action">
+                                <a asp-action="Edit" asp-controller="Products" asp-route-id="@item.IdProduct" class="btn btn-warning btn-sm">
+                                    <i class="fas fa-edit"></i> Sửa
+                                </a>
+                                <a asp-action="Details" asp-controller="Products" asp-route-id="@item.IdProduct" class="btn btn-info btn-sm text-white">
+                                    <i class="fas fa-info-circle"></i> Xem
+                                </a>
+                                <a href="javascript:void(0);" class="btn btn-danger btn-sm" onclick="showHideDrawer('@item.IdProduct', '@(item.Hide ? "Hiển thị" : "Ẩn")')">
+                                    <i class="fas fa-eye-slash"></i> @(item.Hide ? "Hiển thị" : "Ẩn")
+                                </a>
+                                <div id="hideDrawer" class="drawer">
+                                    <div class="drawer-content">
+                                        <h5 id="hideDrawerMessage"></h5>
+                                        <div class="drawer-buttons">
+                                            <button class="btn btn-danger" id="confirmHide">Có</button>
+                                            <button class="btn btn-secondary" onclick="closeHideDrawer()">Hủy</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </td>
+                    </tr>
+                }
                 </tbody>
             </table>
         </div>
     </div>
 </div>
+
+<style>
+    /* Drawer toàn màn hình */
+    .drawer {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5); /* Màu nền tối */
+        display: none; /* Mặc định ẩn */
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+    }
+
+    /* Nội dung của drawer */
+    .drawer-content {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        text-align: center;
+        width: 400px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .drawer-buttons {
+        margin-top: 20px;
+        display: flex;
+        justify-content: space-around;
+    }
+
+        .drawer-buttons button {
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+        }
+</style>
+
+<script>
+    let hideUrl = '';
+    let hideAction = '';
+
+    // Hiển thị drawer xác nhận ẩn/hiển sản phẩm
+    function showHideDrawer(productId, action) {
+        hideAction = action;
+        hideUrl = `/Admin/Products/ToggleHide/${productId}`; // URL API hoặc action để ẩn/hiển
+        const drawer = document.getElementById('hideDrawer');
+        const message = document.getElementById('hideDrawerMessage');
+
+        message.textContent = `Bạn có chắc chắn muốn ${action.toLowerCase()} sản phẩm này?`;
+        drawer.style.display = 'flex'; // Hiển thị drawer
+    }
+
+    // Đóng drawer
+    function closeHideDrawer() {
+        const drawer = document.getElementById('hideDrawer');
+        drawer.style.display = 'none'; // Ẩn drawer
+    }
+
+    // Thực hiện ẩn/hiển khi người dùng nhấn "Có"
+    document.getElementById('confirmHide').addEventListener('click', function () {
+        // Gửi yêu cầu AJAX để ẩn/hiển sản phẩm
+        fetch(hideUrl, {
+            method: 'POST',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Cập nhật giao diện mà không cần tải lại trang
+                    alert(`Sản phẩm đã được ${hideAction.toLowerCase()} thành công!`);
+                    location.reload(); // Tải lại trang (hoặc bạn có thể cập nhật trực tiếp DOM)
+                } else {
+                    alert(`Không thể ${hideAction.toLowerCase()} sản phẩm! Vui lòng thử lại.`);
+                }
+            })
+            .catch(error => {
+                console.error('Lỗi:', error);
+                alert(`Đã xảy ra lỗi khi cố gắng ${hideAction.toLowerCase()} sản phẩm.`);
+            })
+            .finally(() => {
+                closeHideDrawer(); // Đóng drawer sau khi xử lý xong
+            });
+    });
+</script>
+

@@ -8,14 +8,23 @@
 
   <ItemGroup>
     <Compile Remove="wwwroot\ckfinder\**" />
+    <Compile Remove="wwwroot\plugin\ckfinder\userfiles\Images\**" />
+    <Compile Remove="wwwroot\plugin\ckfinder\userfiles\_thumbs\**" />
     <Content Remove="wwwroot\ckfinder\**" />
+    <Content Remove="wwwroot\plugin\ckfinder\userfiles\Images\**" />
+    <Content Remove="wwwroot\plugin\ckfinder\userfiles\_thumbs\**" />
     <EmbeddedResource Remove="wwwroot\ckfinder\**" />
+    <EmbeddedResource Remove="wwwroot\plugin\ckfinder\userfiles\Images\**" />
+    <EmbeddedResource Remove="wwwroot\plugin\ckfinder\userfiles\_thumbs\**" />
     <None Remove="wwwroot\ckfinder\**" />
+    <None Remove="wwwroot\plugin\ckfinder\userfiles\Images\**" />
+    <None Remove="wwwroot\plugin\ckfinder\userfiles\_thumbs\**" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
     <PackageReference Include="Microsoft.AspNet.Mvc" Version="5.3.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.2.7" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.10" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.10" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.10">
@@ -33,6 +42,7 @@
     <Folder Include="Data\" />
     <Folder Include="Models\" />
     <Folder Include="wwwroot\css\" />
+    <Folder Include="wwwroot\HinhAnh\upload\" />
     <Folder Include="wwwroot\img\product\details\NewFolder\" />
     <Folder Include="wwwroot\js\" />
     <Folder Include="wwwroot\lib\bootstrap\" />
@@ -43,7 +53,12 @@
     <Folder Include="wwwroot\lib\jquery-validation\dist\" />
     <Folder Include="wwwroot\lib\jquery\" />
     <Folder Include="wwwroot\lib\jquery\dist\" />
-    <Folder Include="wwwroot\plugin\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="CKFinder">
+      <HintPath>wwwroot\plugin\ckfinder\bin\Debug\CKFinder.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

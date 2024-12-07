@@ -54,7 +54,6 @@ namespace CosmeticMVC.Areas.Admin.Controllers
             return View(product);
         }
 
-
         // GET: Products/Create
         [HttpGet]
         public IActionResult Create()
@@ -118,6 +117,7 @@ namespace CosmeticMVC.Areas.Admin.Controllers
         }
 
         // GET: Products/Edit/5
+
         public async Task<IActionResult> Edit(string id)
         {
             if (id == null)
@@ -125,56 +125,103 @@ namespace CosmeticMVC.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var product = await _context.Products.FindAsync(id);
+            var product = await _context.Products
+                .Include(p => p.IdImageNavigation) // Tải dữ liệu liên kết cho IdImageNavigation
+                .FirstOrDefaultAsync(p => p.IdProduct == id);
+
             if (product == null)
             {
                 return NotFound();
             }
-            ViewData["IdBrand"] = new SelectList(_context.Brands, "Id", "Id", product.IdBrand);
-            ViewData["IdCategory"] = new SelectList(_context.Categories, "IdCategory", "IdCategory", product.IdCategory);
-            ViewData["IdImage"] = new SelectList(_context.Images, "IdImage", "IdImage", product.IdImage);
-            return View(product);
+
+            var model = new ProductEditViewModel
+            {
+                IdProduct = product.IdProduct,
+                Name = product.Name,
+                Description = product.Description,
+                Price = product.Price,
+                Quantity = product.Quantity,
+                IdBrand = product.IdBrand,
+                IdCategory = product.IdCategory,
+                IdImage = product.IdImageNavigation.Name,
+                Exp = product.Exp,
+                Datebegin = product.Datebegin,
+                Hide = product.Hide,
+                TotalSold = product.TotalSold
+            };
+
+            ViewData["IdBrand"] = new SelectList(_context.Brands, "Id", "Name", product.IdBrand);
+            ViewData["IdCategory"] = new SelectList(_context.Categories, "IdCategory", "Name", product.IdCategory);
+            ViewData["IdImage"] = new SelectList(_context.Images, "IdImage", "Name", product.IdImage);
+            return View(model);
         }
+
 
         // POST: Products/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("IdProduct,Description,Name,Price,Quantity,TotalSold,Hide,Meta,Order,Datebegin,Exp,IdBrand,IdCategory,IdIngredient,IdImage")] Product product)
+        public async Task<IActionResult> Edit(string id, [Bind("IdProduct,Name,Price,Quantity,IdBrand,IdCategory,IdImage")] ProductEditViewModel productVM)
         {
-            if (id != product.IdProduct)
+            if (id != productVM.IdProduct)
             {
-                return NotFound();
+                return NotFound(); // Xử lý nếu id không khớp
             }
 
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(product);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ProductExists(product.IdProduct))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                // Tải lại ViewData nếu có lỗi từ phía ModelState
+                ViewData["IdBrand"] = new SelectList(_context.Brands, "Id", "Id", productVM.IdBrand);
+                ViewData["IdCategory"] = new SelectList(_context.Categories, "IdCategory", "IdCategory", productVM.IdCategory);
+                ViewData["IdImage"] = new SelectList(_context.Images, "IdImage", "IdImage", productVM.IdImage);
+                return View(productVM);
             }
-            ViewData["IdBrand"] = new SelectList(_context.Brands, "Id", "Id", product.IdBrand);
-            ViewData["IdCategory"] = new SelectList(_context.Categories, "IdCategory", "IdCategory", product.IdCategory);
-            ViewData["IdImage"] = new SelectList(_context.Images, "IdImage", "IdImage", product.IdImage);
-            return View(product);
+
+            try
+            {
+                // Truy xuất thực thể từ cơ sở dữ liệu
+                var product = await _context.Products.FindAsync(id);
+                if (product == null)
+                {
+                    return NotFound();
+                }
+
+                // Cập nhật các thuộc tính từ ViewModel
+                product.Name = productVM.Name;
+                product.Price = productVM.Price;
+                product.Quantity = productVM.Quantity;
+                product.IdBrand = productVM.IdBrand;
+                product.IdCategory = productVM.IdCategory;
+                product.IdImage = productVM.IdImage;
+
+                // Lưu thay đổi vào cơ sở dữ liệu
+                _context.Update(product);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!ProductExists(productVM.IdProduct))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return RedirectToAction(nameof(Index));
         }
 
-        // GET: Products/Delete/5
+
+
+        private bool ProductExists(string id)
+        {
+            return _context.Products.Any(e => e.IdProduct == id);
+        }
+
+        // GET: Admin/Brands/Delete/5
         public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
@@ -182,37 +229,30 @@ namespace CosmeticMVC.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var product = await _context.Products
-                .Include(p => p.IdBrandNavigation)
-                .Include(p => p.IdCategoryNavigation)
-                .Include(p => p.IdImageNavigation)
+            var prod = await _context.Products
                 .FirstOrDefaultAsync(m => m.IdProduct == id);
-            if (product == null)
+            if (prod == null)
             {
                 return NotFound();
             }
 
-            return View(product);
+            return View(prod);
         }
 
-        // POST: Products/Delete/5
+        // POST: Admin/Brands/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
-            var product = await _context.Products.FindAsync(id);
-            if (product != null)
+            var prod = await _context.Products.FindAsync(id);
+            if (prod != null)
             {
-                _context.Products.Remove(product);
+                _context.Products.Remove(prod);
             }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-
-        private bool ProductExists(string id)
-        {
-            return _context.Products.Any(e => e.IdProduct == id);
-        }
     }
+
 }
