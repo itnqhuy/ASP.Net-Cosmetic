@@ -60,13 +60,6 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();  // Serve static files from wwwroot]
 
-app.UseStaticFiles(new StaticFileOptions
-{
-    FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "plugin")),
-    RequestPath = "/plugi"
-});
-
-
 
 app.UseRouting();
 app.UseSession();
